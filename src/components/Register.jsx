@@ -1,9 +1,6 @@
 import React from "react";
-import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import InputForm from "./InputForm";
 
-const Login = () => {
+const Register = () => {
   return (
     <>
       <div className="container">
@@ -27,21 +24,37 @@ const Login = () => {
                   <input
                     type="text"
                     className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-lg  shadow-gray-400 mb-3"
-                    placeholder="Email | SDT"
+                    placeholder="Họ và tên"
+                  />
+                  <input
+                    type="text"
+                    className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-lg  shadow-gray-400 mb-3"
+                    placeholder="Số điện thoại"
+                  />
+                  <input
+                    type="text"
+                    className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-lg  shadow-gray-400 mb-3"
+                    placeholder="Email"
                   />
                   <input
                     type="password"
                     className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-gray-400 shadow-lg mb-4"
                     placeholder="Mật khẩu*"
                   />
+                  <input
+                    type="password"
+                    className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-lg  shadow-gray-400 mb-3"
+                    placeholder="Xác nhận lại mật khẩu*"
+                  />
                 </div>
               </form>
               <div className="option flex justify-start mb-4 ml-1">
-                <p className="font-semibold">Lưu thông tin đăng nhập</p>
-                <p className="ml-72 font-semibold">Quên mật khẩu?</p>
+                <p className="font-semibold">
+                  Tôi đã đọc và đồng ý với các điều khoản sử dụng
+                </p>
               </div>
               <button className="w-[600px] h-[55px] bg-[#00BAF2] text-[#FFFFFF] font-bold text-[24px] rounded-xl mb-10">
-                ĐĂNG NHẬP
+                ĐĂNG KÍ
               </button>
               <p className="ml-20 ">
                 ---------------------------Hoặc đăng nhập
@@ -60,4 +73,5 @@ const Login = () => {
     </>
   );
 };
-export default Login;
+
+export default Register;
