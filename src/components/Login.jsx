@@ -12,14 +12,16 @@ const Login = () => {
             className="w-[100%]"
             srcSet="https://s3-alpha-sig.figma.com/img/e7a6/81cd/80cadd6f09f9da8b0573d5545fdd18a5?Expires=1717372800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=fX0vaEccFfoWcBtsyPkrNjwClVmcQL7gB5CvgMk2dfM48FJV0szykOt0h-CAQoQudAdNaYEWatQ5nQS~6zjZWglZpiNlAqNoXLjMWIOu~dbvqgQ5ehNi6CW79dP3Dlyh4TkV0xsDOQkg2EGHSHFe5x6vCMNkGAjNNVcBB8c-tQPBXVMdfh5lqWhygqMMOoUoNxVzU49HHgZJZ6wvD8TMmvz4pH4Oe8v0Qd-CegM7QXG8OalLoEVA1jU5CQx29PqtRmTBhS46FiN1B3z6Z-OM6lc5UF5a3sMZ0tMJ2uq3eGPh0M0OqvZP6VfR2ubL3QvMi1qQ2V7P5vpOfXuOUQmJwQ__"
           />
-          <div className="form-login ml-3">
+          <div className="ml-3 form-login">
             <div className="form-header mt-[-30px] ml-52 flex-col">
               <label className="bg-[#FFBE31] text-[#002278] text-[48px] p-7 font-bold rounded-l-lg">
                 ĐĂNG NHẬP
               </label>
-              <a className="bg-[#F5F5F5] text-[#002278] text-[48px] p-7 pl-[90px] font-bold rounded-r-lg">
-                ĐĂNG KÝ
-              </a>
+              <Link to="/register">
+                <a className="bg-[#F5F5F5] text-[#002278] text-[48px] p-7 pl-[90px] font-bold rounded-r-lg">
+                  ĐĂNG KÝ
+                </a>
+              </Link>
             </div>
             <div className="form-body ml-60">
               <form>
@@ -36,9 +38,9 @@ const Login = () => {
                   />
                 </div>
               </form>
-              <div className="option flex justify-start mb-4 ml-1">
+              <div className="flex justify-start mb-4 ml-1 option">
                 <p className="font-semibold">Lưu thông tin đăng nhập</p>
-                <p className="ml-72 font-semibold">Quên mật khẩu?</p>
+                <p className="font-semibold ml-72">Quên mật khẩu?</p>
               </div>
               <button className="w-[600px] h-[55px] bg-[#00BAF2] text-[#FFFFFF] font-bold text-[24px] rounded-xl mb-10">
                 ĐĂNG NHẬP
