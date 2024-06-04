@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import ListProduct from "./components/ListProduct";
 import Login from "./components/Login";
 import UserProfile from "./components/Profile";
+import Payment from "./components/Payment";
 function App() {
   return (
     <>
@@ -80,6 +81,16 @@ function App() {
               <>
                 <Header />
                 <Cart />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <>
+                <Header />
+                <Payment />
                 <Footer />
               </>
             }
