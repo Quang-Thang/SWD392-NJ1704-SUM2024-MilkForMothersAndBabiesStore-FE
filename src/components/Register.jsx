@@ -73,13 +73,6 @@ export default function Register() {
             >
               GOOGLE
             </Button>
-            <Button
-              type="primary"
-              className="w-full bg-blue-700 text-white font-bold py-2 rounded"
-              size="large"
-            >
-              FACEBOOK
-            </Button>
           </div>
         </div>
       </div>
