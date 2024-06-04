@@ -66,9 +66,6 @@ const Register = () => {
               <button className="w-[600px] h-[55px] bg-[#D54B3D] text-[#FFFFFF] font-bold text-[24px] rounded-xl mt-10 ">
                 Google
               </button>
-              <button className="w-[600px] h-[55px] bg-[#1877F2] text-[#FFFFFF] font-bold text-[24px] mt-5 rounded-xl">
-                Facebook
-              </button>
             </div>
           </div>
         </div>
