@@ -57,17 +57,10 @@ export default function Login() {
             </div>
             <Button
               type="primary"
-              className="w-full bg-green-500  text-white font-bold py-2 rounded mb-10"
+              className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 rounded mb-10"
               size="large"
             >
-              OTP/SMS
-            </Button>
-            <Button
-              type="primary"
-              className="w-full bg-blue-700 text-white font-bold py-2 rounded"
-              size="large"
-            >
-              FACEBOOK
+              GOOGLE
             </Button>
           </div>
         </div>
