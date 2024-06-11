@@ -9,6 +9,10 @@ import ListProduct from "./components/ListProduct";
 import Login from "./components/Login";
 import UserProfile from "./components/Profile";
 import Payment from "./components/Payment";
+import Headerv2 from "./staffpages/Headerv2";
+import AllProduct from "./staffpages/AllProduct";
+import AddProduct from "./staffpages/AddProduct";
+import SideBar from "./staffpages/SideBar";
 function App() {
   return (
     <>
@@ -92,6 +96,39 @@ function App() {
                 <Header />
                 <Payment />
                 <Footer />
+              </>
+            }
+          />
+        </Routes>
+        {/* Routes for staff */}
+        <Routes>
+          <Route
+            path="/staff/all-products"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+
+                    <AllProduct />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/staff/add-product"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+
+                    <AddProduct />
+                  </div>
+                </div>
               </>
             }
           />
