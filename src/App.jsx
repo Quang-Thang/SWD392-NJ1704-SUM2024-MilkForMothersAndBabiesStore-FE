@@ -13,6 +13,7 @@ import Headerv2 from "./staffpages/Headerv2";
 import AllProduct from "./staffpages/AllProduct";
 import AddProduct from "./staffpages/AddProduct";
 import SideBar from "./staffpages/SideBar";
+import UpdateProduct from "./staffpages/UpdateProduct";
 function App() {
   return (
     <>
@@ -127,6 +128,21 @@ function App() {
                     <Headerv2 />
 
                     <AddProduct />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/staff/update-product/:id"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+
+                    <UpdateProduct />
                   </div>
                 </div>
               </>
