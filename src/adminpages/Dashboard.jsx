@@ -23,6 +23,12 @@ const Dashboard = () => {
       percentage: "34.7%",
       compared: "Compared to Oct 2023",
     },
+    {
+      title: "Return Orders",
+      amount: "$126.500",
+      percentage: "34.7%",
+      compared: "Compared to Oct 2023",
+    },
   ];
 
   const lineChartConfig = {
