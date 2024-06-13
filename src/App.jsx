@@ -14,6 +14,7 @@ import AllProduct from "./staffpages/AllProduct";
 import AddProduct from "./staffpages/AddProduct";
 import SideBar from "./staffpages/SideBar";
 import Dashboard from "./adminpages/Dashboard";
+import SideBarv2 from "./adminpages/SideBarv2";
 function App() {
   return (
     <>
@@ -141,7 +142,7 @@ function App() {
             element={
               <>
                 <div className="flex">
-                  {/* <SideBarv2 /> */}
+                  <SideBarv2 />
                   <div className="flex-1">
                     <Headerv2 />
 
