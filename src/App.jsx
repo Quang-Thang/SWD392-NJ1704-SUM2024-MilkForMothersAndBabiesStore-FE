@@ -12,8 +12,11 @@ import Payment from "./components/Payment";
 import Headerv2 from "./staffpages/Headerv2";
 import AllProduct from "./staffpages/AllProduct";
 import AddProduct from "./staffpages/AddProduct";
+import UpdateProduct from "./staffpages/UpdateProduct";
 import SideBar from "./staffpages/SideBar";
-
+import SideBarv2 from "./adminpages/SideBarv2";
+import Dashboard from "./adminpages/Dashboard";
+import ManagementStaff from "./adminpages/ManagementStaff";
 function App() {
   return (
     <>
@@ -161,6 +164,20 @@ function App() {
                     <Headerv2 />
 
                     <Dashboard />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/admin/management-staff"
+            element={
+              <>
+                <div className="flex">
+                  <SideBarv2 />
+                  <div className="flex-1">
+                    <Headerv2 />
+                    <ManagementStaff />
                   </div>
                 </div>
               </>
