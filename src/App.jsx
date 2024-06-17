@@ -17,6 +17,7 @@ import SideBar from "./staffpages/SideBar";
 import SideBarv2 from "./adminpages/SideBarv2";
 import Dashboard from "./adminpages/Dashboard";
 import ManagementStaff from "./adminpages/ManagementStaff";
+import OrderList from "./staffpages/OrderList";
 function App() {
   return (
     <>
@@ -146,6 +147,21 @@ function App() {
                     <Headerv2 />
 
                     <UpdateProduct />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/staff/order-list"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+
+                    <OrderList />
                   </div>
                 </div>
               </>
