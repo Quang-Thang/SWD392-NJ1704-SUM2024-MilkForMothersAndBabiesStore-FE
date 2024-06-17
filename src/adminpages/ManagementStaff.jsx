@@ -45,11 +45,6 @@ const ManagementStaff = () => {
       key: "dob",
     },
     {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
-    },
-    {
       title: "Edit",
       key: "edit",
       render: (text, record) => (
