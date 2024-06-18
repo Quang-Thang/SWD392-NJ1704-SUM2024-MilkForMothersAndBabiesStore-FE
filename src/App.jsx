@@ -18,6 +18,7 @@ import SideBarv2 from "./adminpages/SideBarv2";
 import Dashboard from "./adminpages/Dashboard";
 import ManagementStaff from "./adminpages/ManagementStaff";
 import OrderList from "./staffpages/OrderList";
+import OrderDetail from "./staffpages/OrderDetail";
 function App() {
   return (
     <>
@@ -162,6 +163,20 @@ function App() {
                     <Headerv2 />
 
                     <OrderList />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/staff/order-list/order-detail/:id"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+                    <OrderDetail />
                   </div>
                 </div>
               </>
