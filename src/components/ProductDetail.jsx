@@ -15,8 +15,15 @@ import {
 import { StarOutlined } from "@mui/icons-material";
 import Information from "./Information";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../features/cart/CartSlice";
+import {
+  getProductById,
+  addToCart,
+  getUserCart,
+  updateCart,
+  getComments,
+} from "../services/api-service";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -33,9 +40,10 @@ export default function ProductDetail() {
   const [comment, setComment] = useState("");
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
+  const [isInCart, setIsInCart] = useState(false);
   const { id } = useParams();
   const [ratingBreakdown, setRatingBreakdown] = useState([]);
-  const dispatch = useDispatch();
+  const [comments, setComments] = useState();
 
   const toggleReadMore = () => {
     setIsExpanded(!isExpanded);
@@ -74,58 +82,100 @@ export default function ProductDetail() {
     console.log("Comment:", comment);
   };
 
-  const handleAddToCart = () => {
-    dispatch(
-      addToCart({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        quantity: quantity,
-      })
-    );
+  const handleAddToCart = async () => {
+    const accountId = localStorage.getItem("accountId");
+    try {
+      await addToCart(accountId, product.id, quantity, product.price);
+      toast.success("Thêm sản phẩm vào giỏ hàng thành công");
+      setIsInCart(true); // Cập nhật trạng thái isInCart
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        try {
+          await updateCart([
+            {
+              id: 0,
+              accountId,
+              productId: product.id,
+              quantity,
+              price: product.price,
+            },
+          ]);
+          toast.success("Thêm sản phẩm vào giỏ hàng hiện tại thành công");
+          setIsInCart(true); // Cập nhật trạng thái isInCart
+        } catch (updateError) {
+          console.error("Error updating cart:", updateError);
+          toast.error("Cập nhật giỏ hàng thất bại");
+        }
+      } else {
+        console.error("Error adding to cart:", error);
+        toast.error("Thêm sản phẩm vào giỏ hàng thất bại");
+      }
+    }
+  };
+
+  const getProductComments = async () => {
+    try {
+      const res = await axios.get(
+        `https://swdprojectapi.azurewebsites.net/api/comments/get-comments-by-product-id/${id}`
+      );
+      console.log("Response: ", res.data.data);
+      setComments(res.data.data);
+      console.log("Comments: ", comments);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
   };
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         console.log(`Fetching product with ID: ${id}`);
-        const response = await fetch(`http://localhost:3000/products/${id}`);
-        if (!response.ok) {
-          console.error(
-            `Failed to fetch product. HTTP status: ${response.status}`
-          );
-          throw new Error(
-            `HTTP status ${response.status} for product ID: ${id}`
-          );
-        }
-        const data = await response.json();
+        const data = await getProductById(id);
         setProduct(data);
         setRatingBreakdown([
-          data.ratingBreakdown.fiveStar,
-          data.ratingBreakdown.fourStar,
-          data.ratingBreakdown.threeStar,
-          data.ratingBreakdown.twoStar,
-          data.ratingBreakdown.oneStar,
+          data.ratingBreakdown?.fiveStar,
+          data.ratingBreakdown?.fourStar,
+          data.ratingBreakdown?.threeStar,
+          data.ratingBreakdown?.twoStar,
+          data.ratingBreakdown?.oneStar,
         ]);
       } catch (error) {
         console.error("Error fetching product:", error);
         setError(error.message);
       }
     };
+
+    const checkProductInCart = async () => {
+      try {
+        const accountId = localStorage.getItem("accountId"); // Assuming accountId is stored in localStorage
+        if (!accountId) {
+          throw new Error("User not authenticated");
+        }
+        const cartItems = await getUserCart(accountId);
+        const isProductInCart = cartItems.some(
+          (item) => item.productId === parseInt(id)
+        );
+        setIsInCart(isProductInCart);
+      } catch (error) {
+        console.error("Error checking cart:", error.message);
+      }
+    };
+
     fetchProduct();
+    checkProductInCart();
+    getProductComments();
   }, [id]);
 
   if (error) {
-    return <div className="text-red-500">Error: {error}</div>;
+    return <div className="text-red-500">Lỗi: {error}</div>;
   }
 
   if (!product) {
-    return <div>Loading...</div>;
+    return <div>Đang tải...</div>;
   }
 
   const shortDescription = (description) => {
-    return description.length > 300
+    return description?.length > 300
       ? description.substring(0, 300) + "..."
       : description;
   };
@@ -143,48 +193,60 @@ export default function ProductDetail() {
       .replace("₫", " VND");
   };
 
+  const handleCreateReview = async () => {
+    try {
+      const accountId = localStorage.getItem("accountId");
+      const now = new Date();
+
+      // Example usage
+      const res = await axios.post(
+        "https://swdprojectapi.azurewebsites.net/api/comments/create-comment",
+        {
+          userId: accountId,
+          productId: product.id,
+          content: review,
+          commentDate: now,
+          rate: rating,
+          status: true,
+        }
+      );
+      console.log("Rate success: ", res);
+    } catch (error) {
+      console.log("Bug at rating", error);
+    }
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center bg-gray-100 p-4 space-y-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-11/12">
+    <div className="flex flex-col items-center justify-center p-4 space-y-4 bg-gray-100">
+      <div className="w-11/12 p-8 bg-white rounded-lg shadow-lg">
         <div className="flex">
           <div className="w-2/3">
             <img
               src={product?.image}
-              alt="Product"
+              alt="Sản phẩm"
               className="w-full rounded-lg"
             />
-            <div className="flex mt-4 space-x-2">
-              {[...Array(5)].map((_, index) => (
-                <img
-                  key={index}
-                  src={product?.image}
-                  alt="Thumbnail"
-                  className="w-1/5 rounded-lg"
-                />
-              ))}
-            </div>
           </div>
           <div className="w-2/3 pl-8">
             <h1 className="text-2xl font-bold">{product?.name} (New)</h1>
             <p className="text-gray-500">Thương hiệu: {product?.brand}</p>
-            <p className="text-gray-500">SKU: {product?.SKU}</p>
             <Divider />
             <div className="flex items-center">
               <div className="flex-1">
                 <p className="text-gray-500">Giá bán tại: TP. HCM</p>
-                <p className="text-red-500 text-2xl font-bold">
+                <p className="text-2xl font-bold text-red-500">
                   {formatPrice(product?.price)}
                 </p>
               </div>
             </div>
             <Button
               type="primary"
-              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded mt-4"
+              className="w-full py-2 mt-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
               size="large"
             >
               FLASH SALE THÁNG 5
             </Button>
-            <div className="mt-4 flex items-center">
+            <div className="flex items-center mt-4">
               <img
                 src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Icon-VNPAY-QR.png"
                 alt="VNPAY"
@@ -216,11 +278,14 @@ export default function ProductDetail() {
               </div>
               <Button
                 type="primary"
-                className="w-full bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 rounded mt-4"
+                className="w-full py-2 mt-4 font-bold text-white bg-orange-500 rounded hover:bg-orange-700"
                 size="large"
                 onClick={handleAddToCart}
+                disabled={isInCart}
               >
-                Chọn mua
+                {isInCart
+                  ? "Sản phẩm đã có trong giỏ hàng"
+                  : "Thêm vào giỏ hàng"}
               </Button>
             </div>
             <div className="mt-4">
@@ -234,7 +299,7 @@ export default function ProductDetail() {
                 <Option value="Hà Nội">Hà Nội</Option>
                 <Option value="Đà Nẵng">Đà Nẵng</Option>
               </Select>
-              <p className="text-green-500 mt-2">Freeship 7km</p>
+              <p className="mt-2 text-green-500">Freeship 7km</p>
             </div>
             <div className="mt-4 text-red-500">
               <p>
@@ -243,17 +308,17 @@ export default function ProductDetail() {
               </p>
             </div>
           </div>
-          <div className="w-1/4 pl-8 flex flex-col">
+          <div className="flex flex-col w-1/4 pl-8">
             <img
               src="https://cdn-v2.kidsplaza.vn/media/wysiwyg/Landing-2024/5/tai-app/186x186-TAI-APP-T5.png"
               alt="Voucher"
-              className="w-full rounded-lg mb-4"
+              className="w-full mb-4 rounded-lg"
             />
             <div className="flex flex-col justify-between">
               <div className="flex items-center mb-2">
                 <img
                   src="https://cdn-v2.kidsplaza.vn/media/catalog/Group_15.png"
-                  alt="Return Policy"
+                  alt="Chính sách đổi trả"
                   className="w-6 h-6 mr-2"
                 />
                 <p className="text-gray-500">Đổi trả hàng miễn phí 15 ngày</p>
@@ -261,7 +326,7 @@ export default function ProductDetail() {
               <div className="flex items-center mb-2">
                 <img
                   src="https://cdn-v2.kidsplaza.vn/media/catalog/Group_15018.png"
-                  alt="Warranty"
+                  alt="Bảo hành"
                   className="w-6 h-6 mr-2"
                 />
                 <p className="text-gray-500">Bảo hành chính hãng 12 tháng</p>
@@ -278,7 +343,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-      <div className="bg-white rounded-lg shadow-lg p-8 w-11/12 mx-auto">
+      <div className="w-11/12 p-8 mx-auto bg-white rounded-lg shadow-lg">
         <Tabs defaultActiveKey="1">
           <TabPane tab="Mô tả" key="1">
             <Row gutter={[16, 16]}>
@@ -293,7 +358,7 @@ export default function ProductDetail() {
                 </p>
                 <Button
                   type="primary"
-                  className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
+                  className="mt-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
                   onClick={toggleReadMore}
                 >
                   {isExpanded ? "Thu gọn" : "Xem thêm"}
@@ -312,7 +377,7 @@ export default function ProductDetail() {
             </Row>
           </TabPane>
           <TabPane tab="Đánh giá" key="2">
-            <div className="flex items-center space-y-2 justify-around my-10">
+            <div className="flex items-center justify-around my-10 space-y-2">
               <div className="text-2xl font-bold">
                 {product.rating} <Rate disabled defaultValue={product.rating} />
               </div>
@@ -333,7 +398,7 @@ export default function ProductDetail() {
                       }
                       showInfo={false}
                     />
-                    <div className="text-sm w-full">
+                    <div className="w-full text-sm">
                       {ratingBreakdown[index]} Đánh giá
                     </div>
                   </div>
@@ -359,8 +424,9 @@ export default function ProductDetail() {
                 />
                 <Button
                   type="primary"
-                  className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded"
+                  className="py-2 mt-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
                   size="large"
+                  onClick={handleCreateReview}
                 >
                   Gửi đánh giá
                 </Button>
@@ -369,13 +435,14 @@ export default function ProductDetail() {
             <div className="space-y-6">
               <Divider />
               <div className="mb-4">
-                <h2 className="text-xl font-semibold mb-4">Lọc xem theo</h2>
+                <h2 className="mb-4 text-xl font-semibold">Lọc xem theo</h2>
                 <div className="flex space-x-2">
                   {[
                     "Tất cả",
                     "5 sao",
                     "4 sao",
                     "3 sao",
+                    "2 sao",
                     "1 sao",
                     "Có hình ảnh",
                   ].map((item) => (
@@ -391,23 +458,32 @@ export default function ProductDetail() {
                 </div>
               </div>
               <Divider />
-              <h3 className="text-lg font-bold space-x-4">
+              <h3 className="space-x-4 text-lg font-bold">
                 Đánh giá của người dùng
               </h3>
-              <div className="mt-2">
-                <div className="flex items-center">
-                  <span className="font-bold">NGUYEN THAO</span>
-                  <Rate disabled defaultValue={5} className="ml-2" />
-                </div>
-                <p className="text-gray-500">
-                  Sữa tốt cho mẹ và bé, rất thơm ngon
-                </p>
-                <p className="text-gray-400 text-sm">0 lượt thích 04-07-2023</p>
-              </div>
+              {comments != null ? (
+                comments.map((item, index) => (
+                  <div key={item.id} className="mt-2">
+                    <div className="flex items-center">
+                      <span className="font-bold">{item.id}</span>
+                      <Rate
+                        disabled
+                        defaultValue={5}
+                        className="ml-2"
+                        count={item.rate}
+                      />
+                    </div>
+                    <p className="text-gray-500">{item.content}</p>
+                    <p className="text-sm text-gray-400">{item.commentDate}</p>
+                  </div>
+                ))
+              ) : (
+                <div>Chưa có lượt đánh giá</div>
+              )}
             </div>
           </TabPane>
           <TabPane tab="Mẹ hỏi / BeBé trả lời" key="3">
-            <div className="flex flex-col space-y-4 items-center w-1/2">
+            <div className="flex flex-col items-center w-1/2 space-y-4">
               <Input
                 type="text"
                 value={name}
@@ -424,7 +500,7 @@ export default function ProductDetail() {
               />
               <Button
                 type="primary"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded w-full h-12"
+                className="w-full h-12 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
                 onClick={handleSubmitComment}
               >
                 Gửi bình luận
@@ -433,16 +509,16 @@ export default function ProductDetail() {
           </TabPane>
         </Tabs>
       </div>
-      <div className="bg-white-100 my-10 w-11/12">
-        <div className="bg-white p-4 rounded-t-lg flex justify-between items-center border-b">
+      <div className="w-11/12 my-10 bg-white-100">
+        <div className="flex items-center justify-between p-4 bg-white border-b rounded-t-lg">
           <h1 className="text-2xl font-bold">SẢN PHẨM CÓ THỂ BẠN QUAN TÂM</h1>
         </div>
-        <div className="bg-white p-4 rounded-b-lg shadow-md">
+        <div className="p-4 bg-white rounded-b-lg shadow-md">
           <div className="flex justify-around mt-6">
             {[1, 2, 3, 4].map((productIndex) => (
               <div
                 key={productIndex}
-                className="bg-gray-100 p-4 rounded-lg shadow-md w-1/5 text-center"
+                className="w-1/5 p-4 text-center bg-gray-100 rounded-lg shadow-md"
               >
                 <img
                   src="https://via.placeholder.com/150"
@@ -452,12 +528,12 @@ export default function ProductDetail() {
                 <p className="mt-2">
                   Sữa Healthy Care số 3 (Úc) Toddler 900g dành cho trẻ 1
                 </p>
-                <div className="text-red-500 font-bold text-xl mt-2">
+                <div className="mt-2 text-xl font-bold text-red-500">
                   {formatPrice(465000 * productIndex)}
                 </div>
-                <div className="flex justify-center items-center mt-2">
+                <div className="flex items-center justify-center mt-2">
                   <span className="text-yellow-500">★★★★★</span>
-                  <span className="text-gray-500 ml-2">(1101)</span>
+                  <span className="ml-2 text-gray-500">(1101)</span>
                 </div>
               </div>
             ))}
