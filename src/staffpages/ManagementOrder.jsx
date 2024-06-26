@@ -98,11 +98,11 @@ const ManagementOrder = () => {
   ];
 
   return (
-    <div className="mx-6 p-4 my-4">
-      <div className="flex justify-between items-center mb-4">
+    <div className="p-4 mx-6 my-4">
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <h1 className="text-2xl font-bold ml-4">Tất cả đơn hàng</h1>
-          <Breadcrumb className="text-gray-600 ml-4">
+          <h1 className="ml-4 text-2xl font-bold">Tất cả đơn hàng</h1>
+          <Breadcrumb className="ml-4 text-gray-600">
             <Breadcrumb.Item>Trang chủ</Breadcrumb.Item>
             <Breadcrumb.Item>Tất cả đơn hàng</Breadcrumb.Item>
           </Breadcrumb>

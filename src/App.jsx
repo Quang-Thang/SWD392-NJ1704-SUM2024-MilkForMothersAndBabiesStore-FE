@@ -2,34 +2,30 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Cart from "./components/Cart";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import Payment from "./components/Payment";
 import ProductDetail from "./components/ProductDetail";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import ListProduct from "./components/ListProduct";
 import Login from "./components/Login";
-import SideBar from "./staffpages/SideBar";
+import UserProfile from "./components/Profile";
+import Payment from "./components/Payment";
 import Headerv2 from "./staffpages/Headerv2";
 import DashBoard from "./staffpages/DashBoard";
 import AllProduct from "./staffpages/AllProduct";
 import AddProduct from "./staffpages/AddProduct";
 import UpdateProduct from "./staffpages/UpdateProduct";
+import SideBar from "./staffpages/SideBar";
+import SideBarv2 from "./adminpages/SideBarv2";
+import Dashboard from "./adminpages/Dashboard";
+import ManagementStaff from "./adminpages/ManagementStaff";
+import OrderList from "./staffpages/OrderList";
+import OrderDetail from "./staffpages/OrderDetail";
+import ManagementOrder from "./staffpages/ManagementOrder";
+import StaffProfile from "./staffpages/StaffProfile";
 import ManagementUser from "./staffpages/ManagementUser";
 import UserDetail from "./staffpages/UserDetail";
 import UserOrders from "./staffpages/UserOrders";
-import OrderList from "./staffpages/OrderList";
-import OrderDetail from "./staffpages/OrderDetail";
-import UserProfile from "./components/Profile";
-import SideBarv2 from "./adminpages/SideBarv2";
-import ManagementStaff from "./adminpages/ManagementStaff";
-import StaffDetail from "./adminpages/StaffDetail";
-import StaffProfile from "./staffpages/StaffProfile";
-import OrderDetails from "./components/OrderDetailForUser";
-import OrderHistory from "./components/OrderHistory";
-import Headerv3 from "./adminpages/Headerv3";
 import ManagementProduct from "./staffpages/ManagementProduct";
-import ManagementOrder from "./staffpages/ManagementOrder";
-
 function App() {
   return (
     <>
@@ -52,26 +48,6 @@ function App() {
               <>
                 <Header />
                 <ListProduct />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/order-history"
-            element={
-              <>
-                <Header />
-                <OrderHistory />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/order-detail/:id"
-            element={
-              <>
-                <Header />
-                <OrderDetails />
                 <Footer />
               </>
             }
@@ -126,9 +102,17 @@ function App() {
               </>
             }
           />
-          <Route path="/payment" element={<Payment />} />
+          <Route
+            path="/payment"
+            element={
+              <>
+                <Header />
+                <Payment />
+                <Footer />
+              </>
+            }
+          />
         </Routes>
-
         {/* Routes for staff */}
         <Routes>
           <Route
@@ -140,7 +124,7 @@ function App() {
                   <div className="flex-1">
                     <Headerv2 />
 
-                    <DashBoard />
+                    <Dashboard />
                   </div>
                 </div>
               </>
@@ -293,8 +277,7 @@ function App() {
                 </div>
               </>
             }
-          />
-
+          />  
           <Route
             path="/staff/management-order"
             element={
@@ -310,6 +293,7 @@ function App() {
             }
           />
         </Routes>
+        {/* Routes for Admin */}
         <Routes>
           <Route
             path="/admin/dashboard"
@@ -318,24 +302,9 @@ function App() {
                 <div className="flex">
                   <SideBarv2 />
                   <div className="flex-1">
-                    <Headerv3 />
+                    <Headerv2 />
 
-                    {/* <Dashboard /> */}
-                  </div>
-                </div>
-              </>
-            }
-          />
-          <Route
-            path="/admin/profile"
-            element={
-              <>
-                <div className="flex">
-                  <SideBarv2 />
-                  <div className="flex-1">
-                    <Headerv3 />
-
-                    <StaffProfile />
+                    <Dashboard />
                   </div>
                 </div>
               </>
@@ -348,22 +317,8 @@ function App() {
                 <div className="flex">
                   <SideBarv2 />
                   <div className="flex-1">
-                    <Headerv3 />
+                    <Headerv2 />
                     <ManagementStaff />
-                  </div>
-                </div>
-              </>
-            }
-          />
-          <Route
-            path="/admin/staff-detail/:id"
-            element={
-              <>
-                <div className="flex">
-                  <SideBarv2 />
-                  <div className="flex-1">
-                    <Headerv3 />
-                    <StaffDetail />
                   </div>
                 </div>
               </>
