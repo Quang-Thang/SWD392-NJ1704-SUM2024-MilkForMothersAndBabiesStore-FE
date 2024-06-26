@@ -1,65 +1,119 @@
-import React from "react";
-import { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
+import { Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import InputForm from "./InputForm";
+import { login } from "../services/api-service";
 
-const Login = () => {
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      const data = await login(email, password);
+      if (data && data.accessToken) {
+        // Kiểm tra nếu có accessToken trong phản hồi
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("user", JSON.stringify({ name: data.fullname }));
+        localStorage.setItem("role", JSON.stringify({ name: data.role }));
+        localStorage.setItem("accountId", data.id);
+        var role = data.role;
+        switch (role) {
+          case "member":
+            message.success("Login successful");
+            navigate("/");
+            window.location.reload();
+            break;
+          case "staff":
+            message.success("Login successful");
+            navigate("/staff/dashboard");
+            break;
+          case "admin":
+            message.success("Login successful");
+            navigate("/admin/dashboard");
+            break;
+          default:
+            message.error("Unknown role");
+            break;
+        }
+      } else {
+        message.error("Login failed: No access token received");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      message.error("Wrong email or password");
+    }
+  };
+
   return (
-    <>
-      <div className="container">
-        <div className="min-h-[100vh] bg-white">
-          <img
-            className="w-[100%]"
-            srcSet="https://s3-alpha-sig.figma.com/img/e7a6/81cd/80cadd6f09f9da8b0573d5545fdd18a5?Expires=1717372800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=fX0vaEccFfoWcBtsyPkrNjwClVmcQL7gB5CvgMk2dfM48FJV0szykOt0h-CAQoQudAdNaYEWatQ5nQS~6zjZWglZpiNlAqNoXLjMWIOu~dbvqgQ5ehNi6CW79dP3Dlyh4TkV0xsDOQkg2EGHSHFe5x6vCMNkGAjNNVcBB8c-tQPBXVMdfh5lqWhygqMMOoUoNxVzU49HHgZJZ6wvD8TMmvz4pH4Oe8v0Qd-CegM7QXG8OalLoEVA1jU5CQx29PqtRmTBhS46FiN1B3z6Z-OM6lc5UF5a3sMZ0tMJ2uq3eGPh0M0OqvZP6VfR2ubL3QvMi1qQ2V7P5vpOfXuOUQmJwQ__"
-          />
-          <div className="ml-3 form-login">
-            <div className="form-header mt-[-30px] ml-52 flex-col">
-              <label className="bg-[#FFBE31] text-[#002278] text-[48px] p-7 font-bold rounded-l-lg">
-                ĐĂNG NHẬP
-              </label>
-              <Link to="/register">
-                <a className="bg-[#F5F5F5] text-[#002278] text-[48px] p-7 pl-[90px] font-bold rounded-r-lg">
-                  ĐĂNG KÝ
-                </a>
-              </Link>
+    <div className="px-20 my-10 bg-white">
+      <div className="flex justify-center items-center">
+        <img
+          className="absolute z-0 top-[180px]"
+          src="./public/assets/images/image 83.png"
+          alt="login"
+        />
+      </div>
+      <div className="flex justify-center items-center h-screen bg-gray-100 ">
+        <div className="bg-white rounded-lg shadow-lg w-1/3 z-10">
+          <div className="flex">
+            <div className="w-1/2 text-center py-6 bg-yellow-400 rounded-s-md">
+              <h2 className="text-2xl font-bold text-blue-900">ĐĂNG NHẬP</h2>
             </div>
-            <div className="form-body ml-60">
-              <form>
-                <div className="mt-10">
-                  <input
-                    type="text"
-                    className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-lg  shadow-gray-400 mb-3"
-                    placeholder="Email | SDT"
-                  />
-                  <input
-                    type="password"
-                    className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-gray-400 shadow-lg mb-4"
-                    placeholder="Mật khẩu*"
-                  />
-                </div>
-              </form>
-              <div className="flex justify-start mb-4 ml-1 option">
-                <p className="font-semibold">Lưu thông tin đăng nhập</p>
-                <p className="font-semibold ml-72">Quên mật khẩu?</p>
-              </div>
-              <button className="w-[600px] h-[55px] bg-[#00BAF2] text-[#FFFFFF] font-bold text-[24px] rounded-xl mb-10">
-                ĐĂNG NHẬP
-              </button>
-              <p className="ml-20 ">
-                ---------------------------Hoặc đăng nhập
-                bằng---------------------------
-              </p>
-              <button className="w-[600px] h-[55px] bg-[#D54B3D] text-[#FFFFFF] font-bold text-[24px] rounded-xl mt-10 ">
-                Google
-              </button>
-              <button className="w-[600px] h-[55px] bg-[#1877F2] text-[#FFFFFF] font-bold text-[24px] mt-5 rounded-xl">
-                Facebook
-              </button>
+            <Link
+              to="/register"
+              className="w-1/2 text-center py-6 bg-gray-200 rounded-e-md"
+            >
+              <h2 className="text-2xl font-bold text-blue-900">ĐĂNG KÝ</h2>
+            </Link>
+          </div>
+          <div className="mx-12 my-8 w-5/6">
+            <Input
+              className="mb-4"
+              placeholder="Email"
+              type="email"
+              size="large"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input.Password
+              className="mb-4"
+              placeholder="Mật khẩu*"
+              size="large"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <div className="flex justify-between items-center mb-4">
+              <Button type="link" className="p-0 text-black font-bold">
+                Lưu thông tin đăng nhập
+              </Button>
+              <Button type="link" className="p-0 text-black font-bold">
+                Quên mật khẩu?
+              </Button>
             </div>
+            <Button
+              type="primary"
+              className="w-full bg-blue-500 text-white font-bold py-2 rounded"
+              size="large"
+              onClick={handleLogin}
+            >
+              ĐĂNG NHẬP
+            </Button>
+            <div className="flex items-center my-4">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="mx-4 text-gray-500">Hoặc đăng nhập bằng</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
+            <Button
+              type="primary"
+              className="w-full bg-[#D54B3D] text-white font-bold py-2 rounded"
+              size="large"
+            >
+              GOOGLE
+            </Button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
-};
-export default Login;
+}

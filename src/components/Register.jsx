@@ -1,79 +1,103 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Input, Button, DatePicker, Radio } from "antd";
+import { useNavigate } from "react-router-dom";
+import { register } from "../services/api-service";
+import { toast } from "react-toastify";
 
 const Register = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [birthday, setBirthday] = useState(null);
+  const [address, setAddress] = useState("");
+  const [gender, setGender] = useState(true);
+  const [phone, setPhone] = useState("");
+  const navigate = useNavigate();
+
+  const handleRegister = async () => {
+    try {
+      await register({
+        email,
+        password,
+        fullname,
+        birthday,
+        address,
+        gender,
+        phone,
+      });
+      toast.success("Đăng ký thành công");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error registering user:", error);
+      toast.error("Đăng ký thất bại");
+    }
+  };
+
   return (
-    <>
-      <div className="container">
-        <div className="min-h-[100vh] bg-white">
-          <img
-            className="w-[100%]"
-            srcSet="https://s3-alpha-sig.figma.com/img/e7a6/81cd/80cadd6f09f9da8b0573d5545fdd18a5?Expires=1717372800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=fX0vaEccFfoWcBtsyPkrNjwClVmcQL7gB5CvgMk2dfM48FJV0szykOt0h-CAQoQudAdNaYEWatQ5nQS~6zjZWglZpiNlAqNoXLjMWIOu~dbvqgQ5ehNi6CW79dP3Dlyh4TkV0xsDOQkg2EGHSHFe5x6vCMNkGAjNNVcBB8c-tQPBXVMdfh5lqWhygqMMOoUoNxVzU49HHgZJZ6wvD8TMmvz4pH4Oe8v0Qd-CegM7QXG8OalLoEVA1jU5CQx29PqtRmTBhS46FiN1B3z6Z-OM6lc5UF5a3sMZ0tMJ2uq3eGPh0M0OqvZP6VfR2ubL3QvMi1qQ2V7P5vpOfXuOUQmJwQ__"
-          />
-          <div className="ml-3 form-login">
-            <div className="form-header mt-[-30px] ml-52 flex-col">
-              <Link to="/login">
-                <button className="bg-[#FFBE31] text-[#002278] text-[48px] p-7 font-bold rounded-l-lg">
-                  ĐĂNG NHẬP
-                </button>
-              </Link>
-              <a className="bg-[#F5F5F5] text-[#002278] text-[48px] p-7 pl-[90px] font-bold rounded-r-lg">
-                ĐĂNG KÝ
-              </a>
-            </div>
-            <div className="form-body ml-60">
-              <form>
-                <div className="mt-10">
-                  <input
-                    type="text"
-                    className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-lg  shadow-gray-400 mb-3"
-                    placeholder="Họ và tên"
-                  />
-                  <input
-                    type="text"
-                    className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-lg  shadow-gray-400 mb-3"
-                    placeholder="Số điện thoại"
-                  />
-                  <input
-                    type="text"
-                    className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-lg  shadow-gray-400 mb-3"
-                    placeholder="Email"
-                  />
-                  <input
-                    type="password"
-                    className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-gray-400 shadow-lg mb-4"
-                    placeholder="Mật khẩu*"
-                  />
-                  <input
-                    type="password"
-                    className="input p-[20px] w-[600px] h-[55px] rounded-lg text-[24px] shadow-lg  shadow-gray-400 mb-3"
-                    placeholder="Xác nhận lại mật khẩu*"
-                  />
-                </div>
-              </form>
-              <div className="flex justify-start mb-4 ml-1 option">
-                <p className="font-semibold">
-                  Tôi đã đọc và đồng ý với các điều khoản sử dụng
-                </p>
-              </div>
-              <button className="w-[600px] h-[55px] bg-[#00BAF2] text-[#FFFFFF] font-bold text-[24px] rounded-xl mb-10">
-                ĐĂNG KÍ
-              </button>
-              <p className="ml-20 ">
-                ---------------------------Hoặc đăng nhập
-                bằng---------------------------
-              </p>
-              <button className="w-[600px] h-[55px] bg-[#D54B3D] text-[#FFFFFF] font-bold text-[24px] rounded-xl mt-10 ">
-                Google
-              </button>
-              <button className="w-[600px] h-[55px] bg-[#1877F2] text-[#FFFFFF] font-bold text-[24px] mt-5 rounded-xl">
-                Facebook
-              </button>
-            </div>
-          </div>
-        </div>
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="bg-white rounded-lg shadow-lg p-8 w-1/3">
+        <h2 className="text-2xl font-bold text-center mb-4">Đăng Ký</h2>
+        <Input
+          className="mb-4"
+          placeholder="Email"
+          type="email"
+          size="large"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input.Password
+          className="mb-4"
+          placeholder="Mật khẩu"
+          size="large"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Input
+          className="mb-4"
+          placeholder="Họ và tên"
+          size="large"
+          value={fullname}
+          onChange={(e) => setFullname(e.target.value)}
+        />
+        <DatePicker
+          className="mb-4 w-full"
+          placeholder="Ngày sinh"
+          size="large"
+          value={birthday}
+          onChange={(date) => setBirthday(date)}
+        />
+        <Input
+          className="mb-4"
+          placeholder="Địa chỉ"
+          size="large"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <Radio.Group
+          className="mb-4"
+          onChange={(e) => setGender(e.target.value)}
+          value={gender}
+        >
+          <Radio value={true}>Nam</Radio>
+          <Radio value={false}>Nữ</Radio>
+        </Radio.Group>
+        <Input
+          className="mb-4"
+          placeholder="Số điện thoại"
+          size="large"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+        <Button
+          type="primary"
+          className="w-full bg-blue-500 text-white font-bold py-2 rounded"
+          size="large"
+          onClick={handleRegister}
+        >
+          Đăng Ký
+        </Button>
       </div>
-    </>
+    </div>
   );
 };
 
