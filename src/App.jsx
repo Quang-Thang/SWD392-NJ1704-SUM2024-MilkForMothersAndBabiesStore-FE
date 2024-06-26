@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import UserProfile from "./components/Profile";
 import Payment from "./components/Payment";
 import Headerv2 from "./staffpages/Headerv2";
+import DashBoard from "./staffpages/DashBoard";
 import AllProduct from "./staffpages/AllProduct";
 import AddProduct from "./staffpages/AddProduct";
 import UpdateProduct from "./staffpages/UpdateProduct";
@@ -19,6 +20,12 @@ import Dashboard from "./adminpages/Dashboard";
 import ManagementStaff from "./adminpages/ManagementStaff";
 import OrderList from "./staffpages/OrderList";
 import OrderDetail from "./staffpages/OrderDetail";
+import ManagementOrder from "./staffpages/ManagementOrder";
+import StaffProfile from "./staffpages/StaffProfile";
+import ManagementUser from "./staffpages/ManagementUser";
+import UserDetail from "./staffpages/UserDetail";
+import UserOrders from "./staffpages/UserOrders";
+import ManagementProduct from "./staffpages/ManagementProduct";
 function App() {
   return (
     <>
@@ -109,6 +116,36 @@ function App() {
         {/* Routes for staff */}
         <Routes>
           <Route
+            path="/staff/dashboard"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+
+                    <Dashboard />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/staff/profile"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+
+                    <StaffProfile />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
             path="/staff/all-products"
             element={
               <>
@@ -154,6 +191,51 @@ function App() {
             }
           />
           <Route
+            path="/staff/management-user"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+
+                    <ManagementUser />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/staff/management-user/user-detail/:id"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+
+                    <UserDetail />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/staff/management-user/user-orders/:id"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+
+                    <UserOrders />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
             path="/staff/order-list"
             element={
               <>
@@ -177,6 +259,34 @@ function App() {
                   <div className="flex-1">
                     <Headerv2 />
                     <OrderDetail />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/staff/management-product"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+                    <ManagementProduct />
+                  </div>
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/staff/management-order"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+                    <ManagementOrder />
                   </div>
                 </div>
               </>
