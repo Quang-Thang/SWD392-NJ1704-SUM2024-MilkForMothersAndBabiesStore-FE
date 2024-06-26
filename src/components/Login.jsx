@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
 import { Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
@@ -45,6 +46,11 @@ export default function Login() {
     }
   };
 
+=======
+import { Input, Button } from "antd";
+import { Link } from "react-router-dom";
+export default function Login() {
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
   return (
     <div className="px-20 my-10 bg-white">
       <div className="flex justify-center items-center">
@@ -70,18 +76,27 @@ export default function Login() {
           <div className="mx-12 my-8 w-5/6">
             <Input
               className="mb-4"
+<<<<<<< HEAD
               placeholder="Email"
               type="email"
               size="large"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+=======
+              placeholder="Email | SDT"
+              type="email"
+              size="large"
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
             />
             <Input.Password
               className="mb-4"
               placeholder="Mật khẩu*"
               size="large"
+<<<<<<< HEAD
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+=======
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
             />
             <div className="flex justify-between items-center mb-4">
               <Button type="link" className="p-0 text-black font-bold">
@@ -95,7 +110,10 @@ export default function Login() {
               type="primary"
               className="w-full bg-blue-500 text-white font-bold py-2 rounded"
               size="large"
+<<<<<<< HEAD
               onClick={handleLogin}
+=======
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
             >
               ĐĂNG NHẬP
             </Button>
@@ -106,7 +124,11 @@ export default function Login() {
             </div>
             <Button
               type="primary"
+<<<<<<< HEAD
               className="w-full bg-[#D54B3D] text-white font-bold py-2 rounded"
+=======
+              className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 rounded mb-10"
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
               size="large"
             >
               GOOGLE

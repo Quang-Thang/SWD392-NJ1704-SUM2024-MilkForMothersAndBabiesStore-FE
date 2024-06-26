@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
+=======
+import { useState } from "react";
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
 import { Table, Button, Breadcrumb } from "antd";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const ProductList = () => {
+<<<<<<< HEAD
   const [products, setProducts] = useState([]);
   const [sortedInfo, setSortedInfo] = useState({});
 
@@ -21,6 +26,48 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
+=======
+  const [products] = useState([
+    {
+      id: 1,
+      name: "Product's name",
+      price: "$11.40",
+      available: 150,
+      stock: 200,
+    },
+    {
+      id: 2,
+      name: "Product's name",
+      price: "$11.40",
+      available: 150,
+      stock: 100,
+    },
+    {
+      id: 3,
+      name: "Product's name",
+      price: "$11.40",
+      available: 150,
+      stock: 50,
+    },
+    {
+      id: 4,
+      name: "Product's name",
+      price: "$11.40",
+      available: 150,
+      stock: 250,
+    },
+    {
+      id: 5,
+      name: "Product's name",
+      price: "$11.40",
+      available: 150,
+      stock: 300,
+    },
+  ]);
+
+  const [sortedInfo, setSortedInfo] = useState({});
+
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
   const handleChange = (pagination, filters, sorter) => {
     setSortedInfo(sorter);
   };
@@ -33,7 +80,11 @@ const ProductList = () => {
     },
     {
       title: "Price",
+<<<<<<< HEAD
       dataIndex: "regular_price",
+=======
+      dataIndex: "price",
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
       key: "price",
     },
     {
@@ -52,7 +103,11 @@ const ProductList = () => {
       title: "Action",
       key: "action",
       render: (_, product) => (
+<<<<<<< HEAD
         <Link to={`/staff/update-product/${product._id}`}>
+=======
+        <Link to={`/staff/update-product/${product.id}`}>
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
           <MoreVertIcon className="h-6 w-6 " />
         </Link>
       ),

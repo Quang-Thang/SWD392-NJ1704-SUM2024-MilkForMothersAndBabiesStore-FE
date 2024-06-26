@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
+=======
+// import React from "react";
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
 import { Card, Row, Col, Breadcrumb, Button } from "antd";
 import { CalendarOutlined, MoreOutlined } from "@ant-design/icons";
 import { CardBody, CardHeader, Typography } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
+<<<<<<< HEAD
 
 const Dashboard = () => {
   const [cardData, setCardData] = useState([]);
@@ -40,6 +45,35 @@ const Dashboard = () => {
     setCardData(fakeCardData);
     setLoading(false);
   }, []);
+=======
+const Dashboard = () => {
+  const cardData = [
+    {
+      title: "Total Orders",
+      amount: "$126.500",
+      percentage: "34.7%",
+      compared: "Compared to Oct 2023",
+    },
+    {
+      title: "Active Orders",
+      amount: "$126.500",
+      percentage: "34.7%",
+      compared: "Compared to Oct 2023",
+    },
+    {
+      title: "Completed Orders",
+      amount: "$126.500",
+      percentage: "34.7%",
+      compared: "Compared to Oct 2023",
+    },
+    {
+      title: "Return Orders",
+      amount: "$126.500",
+      percentage: "34.7%",
+      compared: "Compared to Oct 2023",
+    },
+  ];
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
 
   const lineChartConfig = {
     type: "line",
@@ -57,7 +91,11 @@ const Dashboard = () => {
         },
       },
       title: {
+<<<<<<< HEAD
         show: false,
+=======
+        show: "",
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
       },
       dataLabels: {
         enabled: false,
@@ -132,7 +170,11 @@ const Dashboard = () => {
         },
       },
       title: {
+<<<<<<< HEAD
         show: false,
+=======
+        show: "",
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
       },
       dataLabels: {
         enabled: false,
@@ -144,10 +186,13 @@ const Dashboard = () => {
     },
   };
 
+<<<<<<< HEAD
   if (loading) {
     return <div>Loading...</div>;
   }
 
+=======
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
   return (
     <div className="p-4 mx-6">
       <div className="flex justify-between items-center mb-4">
@@ -183,6 +228,10 @@ const Dashboard = () => {
           </Col>
         ))}
       </Row>
+<<<<<<< HEAD
+=======
+      {/*  */}
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
       <div className="flex mt-5 space-x-9">
         <Card className="w-3/4">
           <CardHeader
@@ -201,6 +250,10 @@ const Dashboard = () => {
             <Chart {...lineChartConfig} />
           </CardBody>
         </Card>
+<<<<<<< HEAD
+=======
+        {/*  */}
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
         <Card>
           <CardHeader
             floated={false}

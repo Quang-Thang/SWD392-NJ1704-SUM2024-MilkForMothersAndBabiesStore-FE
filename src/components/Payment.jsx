@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
+<<<<<<< HEAD
 import { Card, Radio, Input, Checkbox, Button, Form, Divider } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
@@ -11,12 +12,21 @@ import { Link } from "react-router-dom";
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 import { useEffect } from "react";
 import { message } from "antd";
+=======
+import { Card, Radio, Input, Checkbox, Button, Form } from "antd";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { Divider } from "antd";
+import { CheckCircleOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
 
 export default function Payment() {
   const [form] = Form.useForm();
   const [shippingMethod, setShippingMethod] = useState("standard");
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [currentStep, setCurrentStep] = useState(0);
+<<<<<<< HEAD
   const [cartItems, setCartItems] = useState([]);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [selectedVoucher, setSelectedVoucher] = useState(
@@ -70,6 +80,10 @@ export default function Payment() {
       setCartItems(reduxCartItems);
     }
   }, [reduxCartItems]);
+=======
+
+  const cartItems = useSelector((state) => state.cart.items);
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
 
   const handleShippingChange = (e) => {
     setShippingMethod(e.target.value);
@@ -79,6 +93,7 @@ export default function Payment() {
     setPaymentMethod(e.target.value);
   };
 
+<<<<<<< HEAD
   const handleFormSubmit = async (values) => {
     console.log("Form values:", values);
     setFormData({ ...formData, ...values });
@@ -188,6 +203,10 @@ export default function Payment() {
   const handleOrderSuccess = () => {
     message.success("Order placed successfully!");
     window.location.href = "/";
+=======
+  const handleFormSubmit = (values) => {
+    console.log("Form values:", values);
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
   };
 
   const steps = ["Thông tin đăng nhập", "Thông tin giao hàng", "Thanh toán"];
@@ -204,6 +223,7 @@ export default function Payment() {
     window.location.href = "/";
   };
 
+<<<<<<< HEAD
   const getTotalPrice = () => {
     const total = cartItems.reduce(
       (total, item) => total + item.productId.regular_price * item.quantity,
@@ -213,6 +233,10 @@ export default function Payment() {
       ? total * (1 - selectedVoucher.voucher_discount / 100)
       : total;
   };
+=======
+  const getTotalPrice = () =>
+    cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
 
   return (
     <>
@@ -329,6 +353,7 @@ export default function Payment() {
               {cartItems.map((item) => (
                 <div key={item.id} className="flex items-start mb-4">
                   <img
+<<<<<<< HEAD
                     src={`http://localhost:5000/${item.productId?.image}`}
                     alt={item.productId.name}
                     className="w-16 h-16 object-cover"
@@ -339,6 +364,16 @@ export default function Payment() {
                       <p>
                         {item.productId.regular_price.toLocaleString("vi-VN")}đ
                       </p>
+=======
+                    src={item.image}
+                    alt={item.name}
+                    className="w-16 h-16 object-cover"
+                  />
+                  <div className="flex justify-between ml-4 w-full">
+                    <p className="font-bold">{item.name}</p>
+                    <div className="flex flex-col">
+                      <p>{item.price.toLocaleString("vi-VN")}đ</p>
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
                       <p>x{item.quantity}</p>
                     </div>
                   </div>
@@ -446,12 +481,18 @@ export default function Payment() {
             <Card className="shadow-md">
               <h2 className="text-xl font-bold mb-4 text-blue-500">Giao tới</h2>
               <div className="mb-4">
+<<<<<<< HEAD
                 <p className="font-bold">{formData.name}</p>
                 <p>
                   {formData.address}, {formData.ward}, {formData.district},{" "}
                   {formData.province}
                 </p>
                 <p>{formData.phone}</p>
+=======
+                <p className="font-bold">DK DK</p>
+                <p>T1, Thị trấn Tây Đằng, Huyện Ba Vì, Hà Nội</p>
+                <p>0888574114</p>
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
                 <a href="#" className="text-blue-500">
                   Thay đổi
                 </a>
@@ -460,6 +501,7 @@ export default function Payment() {
               {cartItems.map((item) => (
                 <div key={item.id} className="flex items-center mb-4">
                   <img
+<<<<<<< HEAD
                     src={`http://localhost:5000/${item.productId?.image}`}
                     alt={item.productId.name}
                     className="w-16 h-16 object-cover"
@@ -469,6 +511,16 @@ export default function Payment() {
                     <p>
                       {item.productId.regular_price.toLocaleString("vi-VN")}đ x
                       {item.quantity}
+=======
+                    src={item.image}
+                    alt={item.name}
+                    className="w-16 h-16 object-cover"
+                  />
+                  <div className="ml-4">
+                    <p className="font-bold">{item.name}</p>
+                    <p>
+                      {item.price.toLocaleString("vi-VN")}đ x{item.quantity}
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
                     </p>
                   </div>
                 </div>

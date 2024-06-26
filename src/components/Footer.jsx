@@ -14,7 +14,11 @@ export default function Footer() {
       <Box className="bg-[#00AEEF] text-white py-4">
         <Container>
           <div className="flex space-x-10">
+<<<<<<< HEAD
             <div className="flex-col space-y-4 my-4">
+=======
+            <div className="flex-col my-4 space-y-4">
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
               <div className="flex items-center space-x-20">
                 <Typography>Tư vấn khách hàng</Typography>
                 <Typography>
@@ -47,9 +51,15 @@ export default function Footer() {
         </Container>
       </Box>
 
+<<<<<<< HEAD
       <Box className="bg-white text-black py-8">
         <Container maxWidth="lg">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+=======
+      <Box className="py-8 text-black bg-white">
+        <Container maxWidth="lg">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
             <div className="space-y-2">
               <Typography variant="h7" className="text-[#00AEEF] mb-4">
                 VỀ BEBÉ
@@ -124,10 +134,17 @@ export default function Footer() {
         </Container>
       </Box>
 
+<<<<<<< HEAD
       <Box className="bg-gray-100 text-black py-4">
         <Container maxWidth="lg">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-center md:text-left mb-4 md:mb-0">
+=======
+      <Box className="py-4 text-black bg-gray-100">
+        <Container maxWidth="lg">
+          <div className="flex flex-col items-center justify-between md:flex-row">
+            <div className="mb-4 text-center md:text-left md:mb-0">
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
               <Typography variant="body2">
                 Bản quyền © 2024 BEBÉ - Hệ thống cửa hàng Mẹ Bầu và Em Bé BEBÉ.
               </Typography>
@@ -141,7 +158,11 @@ export default function Footer() {
                 Điện thoại: (024) XXXXXX - Email: contact@bebe.vn
               </Typography>
             </div>
+<<<<<<< HEAD
             <div className="flex items-center space-x-4 mb-4 md:mb-0">
+=======
+            <div className="flex items-center mb-4 space-x-4 md:mb-0">
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
               <img
                 src="./public/assets/images/GOV.png"
                 alt="Bộ Công Thương"

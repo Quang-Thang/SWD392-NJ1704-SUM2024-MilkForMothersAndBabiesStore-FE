@@ -10,6 +10,7 @@ export const renderProducts = (products) => (
         className="rounded-lg shadow-md w-1/5 text-center m-4"
         // onClick={() => onClick(product.id)}
       >
+<<<<<<< HEAD
         <img
           src={
             product.image === null || product.image === ""
@@ -23,6 +24,13 @@ export const renderProducts = (products) => (
         <div className="flex justify-center items-center space-x-2 mt-2">
           <Rate disabled defaultValue={product.rating || 5} />
           <span>({product.reviews || 0})</span>
+=======
+        <img src={product.image} alt={product.name} className="mx-auto" />
+        <p className="mt-2 mx-10">{product.name}</p>
+        <div className="flex justify-center items-center space-x-2 mt-2">
+          <Rate disabled defaultValue={product.rating} />
+          <span>({product.reviews})</span>
+>>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
         </div>
         <div className="text-red-500 font-bold text-xl mt-2">
           {product.price}VND
