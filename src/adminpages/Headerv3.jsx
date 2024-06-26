@@ -27,7 +27,7 @@ const handleLogout = async () => {
   }
 };
 
-const Headerv2 = () => {
+const Headerv3 = () => {
   const [role, setRole] = useState("");
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const Headerv2 = () => {
   const menu = (
     <Menu>
       <Menu.Item key="0">
-        <Link to={"/staff/profile"}>Profile</Link>
+        <Link to={"/admin/profile"}>Profile</Link>
       </Menu.Item>
       <Menu.Item key="1">
         <a href="#settings">Settings</a>
@@ -75,11 +75,11 @@ const Headerv2 = () => {
           onClick={(e) => e.preventDefault()}
         >
           <UserOutlined style={{ fontSize: "20px", marginRight: "8px" }} />
-          <span>STAFF</span>
+          <span>ADMIN</span>
         </Button>
       </Dropdown>
     </div>
   );
 };
 
-export default Headerv2;
+export default Headerv3;

@@ -1,6 +1,50 @@
-import { Input, Button } from "antd";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Input, Button, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/api-service";
+
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      const data = await login(email, password);
+      if (data && data.accessToken) {
+        // Kiểm tra nếu có accessToken trong phản hồi
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("user", JSON.stringify({ name: data.fullname }));
+        localStorage.setItem("role", JSON.stringify({ name: data.role }));
+        localStorage.setItem("accountId", data.id);
+        var role = data.role;
+        switch (role) {
+          case "member":
+            message.success("Login successful");
+            navigate("/");
+            window.location.reload();
+            break;
+          case "staff":
+            message.success("Login successful");
+            navigate("/staff/dashboard");
+            break;
+          case "admin":
+            message.success("Login successful");
+            navigate("/admin/dashboard");
+            break;
+          default:
+            message.error("Unknown role");
+            break;
+        }
+      } else {
+        message.error("Login failed: No access token received");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      message.error("Wrong email or password");
+    }
+  };
+
   return (
     <div className="px-20 my-10 bg-white">
       <div className="flex justify-center items-center">
@@ -26,14 +70,18 @@ export default function Login() {
           <div className="mx-12 my-8 w-5/6">
             <Input
               className="mb-4"
-              placeholder="Email | SDT"
+              placeholder="Email"
               type="email"
               size="large"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <Input.Password
               className="mb-4"
               placeholder="Mật khẩu*"
               size="large"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <div className="flex justify-between items-center mb-4">
               <Button type="link" className="p-0 text-black font-bold">
@@ -47,6 +95,7 @@ export default function Login() {
               type="primary"
               className="w-full bg-blue-500 text-white font-bold py-2 rounded"
               size="large"
+              onClick={handleLogin}
             >
               ĐĂNG NHẬP
             </Button>
@@ -57,7 +106,7 @@ export default function Login() {
             </div>
             <Button
               type="primary"
-              className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 rounded mb-10"
+              className="w-full bg-[#D54B3D] text-white font-bold py-2 rounded"
               size="large"
             >
               GOOGLE

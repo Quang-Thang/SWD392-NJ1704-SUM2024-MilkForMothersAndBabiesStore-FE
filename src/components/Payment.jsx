@@ -4,20 +4,72 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import { Card, Radio, Input, Checkbox, Button, Form } from "antd";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Divider } from "antd";
+import { Card, Radio, Input, Checkbox, Button, Form, Divider } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { ChevronRightIcon } from "@heroicons/react/16/solid";
+import { useEffect } from "react";
+import { message } from "antd";
 
 export default function Payment() {
   const [form] = Form.useForm();
   const [shippingMethod, setShippingMethod] = useState("standard");
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [currentStep, setCurrentStep] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
+  const [paymentUrl, setPaymentUrl] = useState("");
+  const [selectedVoucher, setSelectedVoucher] = useState(
+    JSON.parse(localStorage.getItem("selectedVoucher"))
+  );
 
-  const cartItems = useSelector((state) => state.cart.items);
+  const reduxCartItems = useSelector((state) => state.cart.items);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    province: "",
+    district: "",
+    ward: "",
+    address: "",
+    shippingMethod: "",
+    paymentMethod: "",
+    orderNotes: "",
+    terms: false,
+    voucherId: "",
+    items: reduxCartItems,
+  });
+
+  // Hàm để lấy thông tin giỏ hàng từ backend
+  const fetchCartItems = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch("http://localhost:5000/api/carts", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch cart items. Status: ${response.status}`
+        );
+      }
+      const data = await response.json();
+      setCartItems(data.items);
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+      // Xử lý lỗi, ví dụ hiển thị thông báo lỗi cho người dùng
+    }
+  };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      fetchCartItems();
+    } else {
+      setCartItems(reduxCartItems);
+    }
+  }, [reduxCartItems]);
 
   const handleShippingChange = (e) => {
     setShippingMethod(e.target.value);
@@ -27,8 +79,115 @@ export default function Payment() {
     setPaymentMethod(e.target.value);
   };
 
-  const handleFormSubmit = (values) => {
+  const handleFormSubmit = async (values) => {
     console.log("Form values:", values);
+    setFormData({ ...formData, ...values });
+
+    if (currentStep !== 1) {
+      nextStep();
+    } else {
+      formData.paymentMethod = values.paymentMethod;
+      formData.shippingMethod = values.shippingMethod;
+      formData.terms = values.terms;
+      formData.orderNotes = values.orderNotes;
+      selectedVoucher
+        ? (formData.voucherId = selectedVoucher._id)
+        : (formData.voucherId = "");
+      var dataOrder = await createOrder(formData);
+      if (values.paymentMethod === "vnpay") {
+        try {
+          const accessToken = localStorage.getItem("accessToken");
+          const response = await fetch(
+            "http://localhost:5000/api/vnpay/create_payment_url",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({
+                amount: getTotalPrice(),
+                bankCode: "NCB",
+                orderInfo: dataOrder._id,
+                orderType: "Pending",
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to create VNPAY payment URL");
+          }
+
+          const data = await response.json();
+          console.log("VNPAY payment URL:", data.vnpUrl);
+          setPaymentUrl(data.vnpUrl);
+
+          // Redirect to VNPAY payment gateway
+          window.location.href = data.vnpUrl;
+        } catch (error) {
+          console.error("Error creating VNPAY payment URL:", error.message);
+          // Handle error, display error message, etc.
+        }
+      }
+    }
+  };
+
+  const createOrder = async (orderData) => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        const response = await fetch("http://localhost:5000/api/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(orderData),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to create order");
+        }
+
+        const data = await response.json();
+
+        if (data.paymentMethod !== "vnpay") {
+          handleOrderSuccess();
+        } else {
+          return data;
+        }
+      } else {
+        const response = await fetch(
+          "http://localhost:5000/api/orders/withoutAccount",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(orderData),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to create order");
+        }
+
+        const data = await response.json();
+
+        if (data.paymentMethod !== "vnpay") {
+          handleOrderSuccess();
+        } else {
+          return data;
+        }
+      }
+    } catch (error) {
+      console.error("Error creating order:", error.message);
+    }
+  };
+
+  const handleOrderSuccess = () => {
+    message.success("Order placed successfully!");
+    window.location.href = "/";
   };
 
   const steps = ["Thông tin đăng nhập", "Thông tin giao hàng", "Thanh toán"];
@@ -45,8 +204,15 @@ export default function Payment() {
     window.location.href = "/";
   };
 
-  const getTotalPrice = () =>
-    cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const getTotalPrice = () => {
+    const total = cartItems.reduce(
+      (total, item) => total + item.productId.regular_price * item.quantity,
+      0
+    );
+    return selectedVoucher
+      ? total * (1 - selectedVoucher.voucher_discount / 100)
+      : total;
+  };
 
   return (
     <>
@@ -163,14 +329,16 @@ export default function Payment() {
               {cartItems.map((item) => (
                 <div key={item.id} className="flex items-start mb-4">
                   <img
-                    src={item.image}
-                    alt={item.name}
+                    src={`http://localhost:5000/${item.productId?.image}`}
+                    alt={item.productId.name}
                     className="w-16 h-16 object-cover"
                   />
                   <div className="flex justify-between ml-4 w-full">
-                    <p className="font-bold">{item.name}</p>
+                    <p className="font-bold">{item.productId.name}</p>
                     <div className="flex flex-col">
-                      <p>{item.price.toLocaleString("vi-VN")}đ</p>
+                      <p>
+                        {item.productId.regular_price.toLocaleString("vi-VN")}đ
+                      </p>
                       <p>x{item.quantity}</p>
                     </div>
                   </div>
@@ -278,9 +446,12 @@ export default function Payment() {
             <Card className="shadow-md">
               <h2 className="text-xl font-bold mb-4 text-blue-500">Giao tới</h2>
               <div className="mb-4">
-                <p className="font-bold">DK DK</p>
-                <p>T1, Thị trấn Tây Đằng, Huyện Ba Vì, Hà Nội</p>
-                <p>0888574114</p>
+                <p className="font-bold">{formData.name}</p>
+                <p>
+                  {formData.address}, {formData.ward}, {formData.district},{" "}
+                  {formData.province}
+                </p>
+                <p>{formData.phone}</p>
                 <a href="#" className="text-blue-500">
                   Thay đổi
                 </a>
@@ -289,14 +460,15 @@ export default function Payment() {
               {cartItems.map((item) => (
                 <div key={item.id} className="flex items-center mb-4">
                   <img
-                    src={item.image}
-                    alt={item.name}
+                    src={`http://localhost:5000/${item.productId?.image}`}
+                    alt={item.productId.name}
                     className="w-16 h-16 object-cover"
                   />
                   <div className="ml-4">
-                    <p className="font-bold">{item.name}</p>
+                    <p className="font-bold">{item.productId.name}</p>
                     <p>
-                      {item.price.toLocaleString("vi-VN")}đ x{item.quantity}
+                      {item.productId.regular_price.toLocaleString("vi-VN")}đ x
+                      {item.quantity}
                     </p>
                   </div>
                 </div>

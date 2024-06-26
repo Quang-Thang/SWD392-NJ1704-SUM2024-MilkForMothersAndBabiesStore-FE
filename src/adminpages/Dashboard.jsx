@@ -1,35 +1,45 @@
-// import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Row, Col, Breadcrumb, Button } from "antd";
 import { CalendarOutlined, MoreOutlined } from "@ant-design/icons";
 import { CardBody, CardHeader, Typography } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
+
 const Dashboard = () => {
-  const cardData = [
-    {
-      title: "Total Orders",
-      amount: "$126.500",
-      percentage: "34.7%",
-      compared: "Compared to Oct 2023",
-    },
-    {
-      title: "Active Orders",
-      amount: "$126.500",
-      percentage: "34.7%",
-      compared: "Compared to Oct 2023",
-    },
-    {
-      title: "Completed Orders",
-      amount: "$126.500",
-      percentage: "34.7%",
-      compared: "Compared to Oct 2023",
-    },
-    {
-      title: "Return Orders",
-      amount: "$126.500",
-      percentage: "34.7%",
-      compared: "Compared to Oct 2023",
-    },
-  ];
+  const [cardData, setCardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fake data for card statistics
+    const fakeCardData = [
+      {
+        title: "Orders",
+        amount: 500,
+        percentage: "+5%",
+        compared: "Compared to last week",
+      },
+      {
+        title: "Revenue",
+        amount: "$12,000",
+        percentage: "+10%",
+        compared: "Compared to last week",
+      },
+      {
+        title: "Customers",
+        amount: 300,
+        percentage: "+15%",
+        compared: "Compared to last week",
+      },
+      {
+        title: "Products Sold",
+        amount: 1500,
+        percentage: "+20%",
+        compared: "Compared to last week",
+      },
+    ];
+
+    setCardData(fakeCardData);
+    setLoading(false);
+  }, []);
 
   const lineChartConfig = {
     type: "line",
@@ -47,7 +57,7 @@ const Dashboard = () => {
         },
       },
       title: {
-        show: "",
+        show: false,
       },
       dataLabels: {
         enabled: false,
@@ -122,7 +132,7 @@ const Dashboard = () => {
         },
       },
       title: {
-        show: "",
+        show: false,
       },
       dataLabels: {
         enabled: false,
@@ -133,6 +143,10 @@ const Dashboard = () => {
       },
     },
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="p-4 mx-6">
@@ -169,7 +183,6 @@ const Dashboard = () => {
           </Col>
         ))}
       </Row>
-      {/*  */}
       <div className="flex mt-5 space-x-9">
         <Card className="w-3/4">
           <CardHeader
@@ -188,7 +201,6 @@ const Dashboard = () => {
             <Chart {...lineChartConfig} />
           </CardBody>
         </Card>
-        {/*  */}
         <Card>
           <CardHeader
             floated={false}

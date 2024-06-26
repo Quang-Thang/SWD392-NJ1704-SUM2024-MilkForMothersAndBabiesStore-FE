@@ -1,48 +1,25 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button, Breadcrumb } from "antd";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const ProductList = () => {
-  const [products] = useState([
-    {
-      id: 1,
-      name: "Product's name",
-      price: "$11.40",
-      available: 150,
-      stock: 200,
-    },
-    {
-      id: 2,
-      name: "Product's name",
-      price: "$11.40",
-      available: 150,
-      stock: 100,
-    },
-    {
-      id: 3,
-      name: "Product's name",
-      price: "$11.40",
-      available: 150,
-      stock: 50,
-    },
-    {
-      id: 4,
-      name: "Product's name",
-      price: "$11.40",
-      available: 150,
-      stock: 250,
-    },
-    {
-      id: 5,
-      name: "Product's name",
-      price: "$11.40",
-      available: 150,
-      stock: 300,
-    },
-  ]);
-
+  const [products, setProducts] = useState([]);
   const [sortedInfo, setSortedInfo] = useState({});
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/products");
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const handleChange = (pagination, filters, sorter) => {
     setSortedInfo(sorter);
@@ -56,7 +33,7 @@ const ProductList = () => {
     },
     {
       title: "Price",
-      dataIndex: "price",
+      dataIndex: "regular_price",
       key: "price",
     },
     {
@@ -75,7 +52,7 @@ const ProductList = () => {
       title: "Action",
       key: "action",
       render: (_, product) => (
-        <Link to={`/staff/update-product/${product.id}`}>
+        <Link to={`/staff/update-product/${product._id}`}>
           <MoreVertIcon className="h-6 w-6 " />
         </Link>
       ),
