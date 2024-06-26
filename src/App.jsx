@@ -2,16 +2,12 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Cart from "./components/Cart";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-<<<<<<< HEAD
 import Payment from "./components/Payment";
-=======
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
 import ProductDetail from "./components/ProductDetail";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import ListProduct from "./components/ListProduct";
 import Login from "./components/Login";
-<<<<<<< HEAD
 import SideBar from "./staffpages/SideBar";
 import Headerv2 from "./staffpages/Headerv2";
 import DashBoard from "./staffpages/DashBoard";
@@ -34,20 +30,6 @@ import Headerv3 from "./adminpages/Headerv3";
 import ManagementProduct from "./staffpages/ManagementProduct";
 import ManagementOrder from "./staffpages/ManagementOrder";
 
-=======
-import UserProfile from "./components/Profile";
-import Payment from "./components/Payment";
-import Headerv2 from "./staffpages/Headerv2";
-import AllProduct from "./staffpages/AllProduct";
-import AddProduct from "./staffpages/AddProduct";
-import UpdateProduct from "./staffpages/UpdateProduct";
-import SideBar from "./staffpages/SideBar";
-import SideBarv2 from "./adminpages/SideBarv2";
-import Dashboard from "./adminpages/Dashboard";
-import ManagementStaff from "./adminpages/ManagementStaff";
-import OrderList from "./staffpages/OrderList";
-import OrderDetail from "./staffpages/OrderDetail";
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
 function App() {
   return (
     <>
@@ -75,7 +57,6 @@ function App() {
             }
           />
           <Route
-<<<<<<< HEAD
             path="/order-history"
             element={
               <>
@@ -96,8 +77,6 @@ function App() {
             }
           />
           <Route
-=======
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
             path="/login"
             element={
               <>
@@ -147,7 +126,6 @@ function App() {
               </>
             }
           />
-<<<<<<< HEAD
           <Route path="/payment" element={<Payment />} />
         </Routes>
 
@@ -184,22 +162,6 @@ function App() {
             }
           />
           <Route
-=======
-          <Route
-            path="/payment"
-            element={
-              <>
-                <Header />
-                <Payment />
-                <Footer />
-              </>
-            }
-          />
-        </Routes>
-        {/* Routes for staff */}
-        <Routes>
-          <Route
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
             path="/staff/all-products"
             element={
               <>
@@ -245,7 +207,6 @@ function App() {
             }
           />
           <Route
-<<<<<<< HEAD
             path="/staff/management-user"
             element={
               <>
@@ -291,8 +252,6 @@ function App() {
             }
           />
           <Route
-=======
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
             path="/staff/order-list"
             element={
               <>
@@ -321,7 +280,6 @@ function App() {
               </>
             }
           />
-<<<<<<< HEAD
           <Route
             path="/staff/management-product"
             element={
@@ -352,10 +310,6 @@ function App() {
             }
           />
         </Routes>
-=======
-        </Routes>
-        {/* Routes for Admin */}
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
         <Routes>
           <Route
             path="/admin/dashboard"
@@ -364,7 +318,6 @@ function App() {
                 <div className="flex">
                   <SideBarv2 />
                   <div className="flex-1">
-<<<<<<< HEAD
                     <Headerv3 />
 
                     {/* <Dashboard /> */}
@@ -383,11 +336,6 @@ function App() {
                     <Headerv3 />
 
                     <StaffProfile />
-=======
-                    <Headerv2 />
-
-                    <Dashboard />
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
                   </div>
                 </div>
               </>
@@ -400,18 +348,13 @@ function App() {
                 <div className="flex">
                   <SideBarv2 />
                   <div className="flex-1">
-<<<<<<< HEAD
                     <Headerv3 />
-=======
-                    <Headerv2 />
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
                     <ManagementStaff />
                   </div>
                 </div>
               </>
             }
           />
-<<<<<<< HEAD
           <Route
             path="/admin/staff-detail/:id"
             element={
@@ -426,8 +369,6 @@ function App() {
               </>
             }
           />
-=======
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
         </Routes>
       </Router>
     </>

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import { Input, Dropdown, Menu, Button, Badge, message } from "antd";
 import { SearchOutlined, UserOutlined, BellOutlined } from "@ant-design/icons";
@@ -58,30 +57,6 @@ const Headerv2 = () => {
     </Menu>
   );
 
-=======
-// import React from "react";
-import { Input, Dropdown, Menu, Button } from "antd";
-import { SearchOutlined, UserOutlined } from "@ant-design/icons";
-
-const { Search } = Input;
-
-const menu = (
-  <Menu>
-    <Menu.Item key="0">
-      <a href="#profile">Profile</a>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <a href="#settings">Settings</a>
-    </Menu.Item>
-    <Menu.Divider />
-    <Menu.Item key="3">
-      <a href="#logout">Logout</a>
-    </Menu.Item>
-  </Menu>
-);
-
-const Headerv2 = () => {
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
   return (
     <div className="flex justify-end items-center p-4 bg-white shadow-md h-24 w-full sticky right-0">
       <Search
@@ -91,15 +66,9 @@ const Headerv2 = () => {
         className="mr-4"
         prefix={<SearchOutlined />}
       />
-<<<<<<< HEAD
       <Badge count={5} className="mr-4">
         <BellOutlined style={{ fontSize: "20px" }} />
       </Badge>
-=======
-      {/* <Badge count={5} className="mr-4">
-        <BellOutlined style={{ fontSize: "20px" }} />
-      </Badge> */}
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
       <Dropdown overlay={menu} trigger={["click"]}>
         <Button
           className="ant-dropdown-link flex items-center"

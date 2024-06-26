@@ -8,7 +8,6 @@ const { Dragger } = Upload;
 
 const AddProduct = () => {
   const [imagePreview, setImagePreview] = useState(null);
-<<<<<<< HEAD
   const [productData, setProductData] = useState({
     name: "",
     description: "",
@@ -29,38 +28,16 @@ const AddProduct = () => {
   const handleImageUpload = (info) => {
     const { file } = info;
     if (file.status === "done" || file.status === "uploading") {
-=======
-
-  const handleImageUpload = (info) => {
-    const { file } = info;
-    console.log("File info:", file);
-    if (file.status !== "uploading") {
-      console.log(file, info);
-    }
-
-    if (file.status === "done" || file.status === "uploading") {
-      console.log("File type:", file.type);
-
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
       if (file.type === "image/png") {
         const reader = new FileReader();
         reader.readAsDataURL(file.originFileObj);
         reader.onload = () => {
           setImagePreview(reader.result);
-<<<<<<< HEAD
           setProductData({ ...productData, image: file.originFileObj });
-=======
-          console.log("Image preview updated");
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
         };
       } else {
         message.error("You can only upload PNG files!");
       }
-<<<<<<< HEAD
-=======
-    } else if (file.status === "error") {
-      console.error("Error uploading file:", file.error);
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
     }
   };
 
@@ -72,7 +49,6 @@ const AddProduct = () => {
     return isPng;
   };
 
-<<<<<<< HEAD
   const handleSubmit = async () => {
     const formData = new FormData();
     for (const key in productData) {
@@ -112,8 +88,6 @@ const AddProduct = () => {
     }
   };
 
-=======
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
   return (
     <Card className="p-6 bg-gray-100 min-h-screen">
       <div className="mb-4">
@@ -128,7 +102,6 @@ const AddProduct = () => {
         <div className="grid grid-cols-2 gap-6">
           <div>
             <label className="block text-gray-700">Product Name</label>
-<<<<<<< HEAD
             <Input
               name="name"
               value={productData.name}
@@ -142,19 +115,12 @@ const AddProduct = () => {
               name="description"
               value={productData.description}
               onChange={handleInputChange}
-=======
-            <Input placeholder="Type product's name here" className="mb-4" />
-
-            <label className="block text-gray-700">Description</label>
-            <TextArea
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
               placeholder="Type Description here"
               rows={2}
               className="mb-4"
             />
 
             <label className="block text-gray-700">Category</label>
-<<<<<<< HEAD
             <Input
               name="category"
               value={productData.category}
@@ -171,17 +137,10 @@ const AddProduct = () => {
               placeholder="Type brand name here"
               className="mb-4"
             />
-=======
-            <Input placeholder="Type category here" className="mb-4" />
-
-            <label className="block text-gray-700">Brand Name</label>
-            <Input placeholder="Type brand name here" className="mb-4" />
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-gray-700">SKU</label>
-<<<<<<< HEAD
                 <Input
                   name="SKU"
                   value={productData.SKU}
@@ -199,20 +158,12 @@ const AddProduct = () => {
                   placeholder=""
                   className="mb-4"
                 />
-=======
-                <Input placeholder="123-456" className="mb-4" />
-              </div>
-              <div>
-                <label className="block text-gray-700">Stock Quantity</label>
-                <Input placeholder="" className="mb-4" />
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-gray-700">Regular Price</label>
-<<<<<<< HEAD
                 <Input
                   name="regular_price"
                   value={productData.regular_price}
@@ -230,13 +181,6 @@ const AddProduct = () => {
                   placeholder="$"
                   className="mb-4"
                 />
-=======
-                <Input placeholder="$" className="mb-4" />
-              </div>
-              <div>
-                <label className="block text-gray-700">Sale Price</label>
-                <Input placeholder="$" className="mb-4" />
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
               </div>
             </div>
           </div>
@@ -274,15 +218,11 @@ const AddProduct = () => {
           </div>
         </div>
         <div className="flex justify-between space-x-4 mt-6">
-<<<<<<< HEAD
           <Button
             type="primary"
             className="bg-green-500"
             onClick={handleSubmit}
           >
-=======
-          <Button type="primary" className="bg-green-500 ">
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
             ADD NEW PRODUCT
           </Button>
           <Button>Cancel</Button>

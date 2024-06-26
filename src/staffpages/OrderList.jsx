@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import {
   Table,
@@ -134,62 +133,10 @@ const OrderList = () => {
     {
       title: "Trạng thái",
       dataIndex: ["status", "orderStatus1"],
-=======
-// import React from "react";
-import { Table, Tag, Breadcrumb } from "antd";
-import { Link } from "react-router-dom";
-
-const OrderList = () => {
-  const data = [
-    {
-      orderId: "1",
-      date: "2022-01-01",
-      customerName: "John Doe",
-      status: "complete",
-      amount: "$100",
-    },
-    {
-      orderId: "2",
-      date: "2022-01-02",
-      customerName: "Jane Smith",
-      status: "pending",
-      amount: "$200",
-    },
-    {
-      orderId: "3",
-      date: "2022-01-03",
-      customerName: "Bob Johnson",
-      status: "cancel",
-      amount: "$300",
-    },
-  ];
-
-  const columns = [
-    {
-      title: "Order ID",
-      dataIndex: "orderId",
-      key: "orderId",
-    },
-
-    {
-      title: "Customer Name",
-      dataIndex: "customerName",
-      key: "customerName",
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
       key: "status",
       render: (status) => {
         let color;
         switch (status) {
-<<<<<<< HEAD
           case "Pending":
             color = "orange";
             break;
@@ -203,15 +150,6 @@ const OrderList = () => {
             color = "cyan";
             break;
           case "Cancelled":
-=======
-          case "complete":
-            color = "green";
-            break;
-          case "pending":
-            color = "orange";
-            break;
-          case "cancel":
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
             color = "red";
             break;
           default:
@@ -221,7 +159,6 @@ const OrderList = () => {
       },
     },
     {
-<<<<<<< HEAD
       title: "Số tiền",
       dataIndex: "total",
       key: "amount",
@@ -252,20 +189,6 @@ const OrderList = () => {
           </Dropdown>
         );
       },
-=======
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (text, record) => (
-        <Link to={`/staff/order-list/order-detail/${record.orderId}`}>
-          View Detail
-        </Link>
-      ),
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
     },
   ];
 
@@ -273,7 +196,6 @@ const OrderList = () => {
     <>
       <div className="mx-6 p-4 my-4">
         <div className="mb-4">
-<<<<<<< HEAD
           <h1 className="text-2xl font-bold">Danh sách đơn hàng</h1>
           <Breadcrumb className="text-gray-600">
             <Breadcrumb.Item>Trang chủ</Breadcrumb.Item>
@@ -307,16 +229,6 @@ const OrderList = () => {
           rowKey="id"
         />
       </Modal>
-=======
-          <h1 className="text-2xl font-bold">Order List</h1>
-          <Breadcrumb className="text-gray-600">
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>Order List</Breadcrumb.Item>
-          </Breadcrumb>
-        </div>
-        <Table dataSource={data} columns={columns} />
-      </div>
->>>>>>> 21cee698bdf498db9170a9bb1a97d0af9538ffa2
     </>
   );
 };
