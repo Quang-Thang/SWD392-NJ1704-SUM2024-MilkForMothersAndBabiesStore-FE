@@ -44,7 +44,7 @@ const ManagementStaff = () => {
 
         setDataSource(formattedStaffData);
       } catch (error) {
-        console.error("Lỗi khi lấy dữ liệu nhân viên:", error);
+        console.error("Lỗi khi lấy dữ liệu nhân viên: ", error);
       }
     };
 
