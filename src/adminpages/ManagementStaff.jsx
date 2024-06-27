@@ -77,7 +77,7 @@ const ManagementStaff = () => {
       message.success("Cập nhật tài khoản thành công");
       handleCancel();
     } catch (error) {
-      console.error("Lỗi khi cập nhật tài khoản:", error);
+      console.error("Lỗi khi cập nhật tài khoản: ", error);
       message.error("Cập nhật tài khoản thất bại");
     }
   };
