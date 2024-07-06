@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 import { useEffect } from "react";
 import { message } from "antd";
+import PaymentForm from "./PaymentForm";
+import StripeContainer from "./StripeContainer";
 
 export default function Payment() {
   const [form] = Form.useForm();
@@ -216,9 +218,9 @@ export default function Payment() {
 
   return (
     <>
-      <div className="bg-blue-800 p-4 flex justify-between items-center">
+      <div className="flex items-center justify-between p-4 bg-blue-800">
         <div className="flex items-center">
-          <div className="p-2 rounded-full w-40">
+          <div className="w-40 p-2 rounded-full">
             <Link to="/">
               <img src="./public/assets/images/logo.png" alt="Logo" />
             </Link>
@@ -258,10 +260,10 @@ export default function Payment() {
       </div>
 
       {currentStep === 0 && (
-        <div className="flex flex-col md:flex-row w-11/12 mx-auto my-10">
-          <div className="w-full md:w-1/2 p-4">
+        <div className="flex flex-col w-11/12 mx-auto my-10 md:flex-row">
+          <div className="w-full p-4 md:w-1/2">
             <Card className="shadow-md">
-              <h2 className="text-xl font-bold mb-4 text-blue-500">
+              <h2 className="mb-4 text-xl font-bold text-blue-500">
                 Địa chỉ giao hàng
               </h2>
               <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
@@ -323,17 +325,17 @@ export default function Payment() {
               </Form>
             </Card>
           </div>
-          <div className="w-full md:w-1/2 p-4">
+          <div className="w-full p-4 md:w-1/2">
             <Card className="shadow-md">
-              <h2 className="text-xl font-bold mb-4 text-blue-500">Giỏ hàng</h2>
+              <h2 className="mb-4 text-xl font-bold text-blue-500">Giỏ hàng</h2>
               {cartItems.map((item) => (
                 <div key={item.id} className="flex items-start mb-4">
                   <img
                     src={`http://localhost:5000/${item.productId?.image}`}
                     alt={item.productId.name}
-                    className="w-16 h-16 object-cover"
+                    className="object-cover w-16 h-16"
                   />
-                  <div className="flex justify-between ml-4 w-full">
+                  <div className="flex justify-between w-full ml-4">
                     <p className="font-bold">{item.productId.name}</p>
                     <div className="flex flex-col">
                       <p>
@@ -344,7 +346,7 @@ export default function Payment() {
                   </div>
                 </div>
               ))}
-              <div className="border-t pt-4">
+              <div className="pt-4 border-t">
                 <div className="flex justify-between mb-2">
                   <span>Tổng giá sản phẩm</span>
                   <span>{getTotalPrice().toLocaleString("vi-VN")}đ</span>
@@ -365,10 +367,10 @@ export default function Payment() {
         </div>
       )}
       {currentStep === 1 && (
-        <div className="flex flex-col md:flex-row w-11/12 mx-auto my-10">
-          <div className="w-full md:w-1/2 p-4">
+        <div className="flex flex-col w-11/12 mx-auto my-10 md:flex-row">
+          <div className="w-full p-4 md:w-1/2">
             <Card className="shadow-md">
-              <h2 className="text-xl font-bold mb-4 text-blue-500">
+              <h2 className="mb-4 text-xl font-bold text-blue-500">
                 Phương thức vận chuyển
               </h2>
               <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
@@ -384,7 +386,7 @@ export default function Payment() {
                   </Radio.Group>
                 </Form.Item>
                 <Divider />
-                <h2 className="text-xl font-bold mb-4 text-blue-500">
+                <h2 className="mb-4 text-xl font-bold text-blue-500">
                   Phương thức thanh toán
                 </h2>
                 <Form.Item name="paymentMethod" label="Phương thức thanh toán">
@@ -400,6 +402,7 @@ export default function Payment() {
                     </div>
                   </Radio.Group>
                 </Form.Item>
+                <StripeContainer />
                 <Form.Item>
                   <Input.TextArea placeholder="Ghi chú đơn hàng" />
                 </Form.Item>
@@ -442,9 +445,9 @@ export default function Payment() {
               </Form>
             </Card>
           </div>
-          <div className="w-full md:w-1/2 p-4">
+          <div className="w-full p-4 md:w-1/2">
             <Card className="shadow-md">
-              <h2 className="text-xl font-bold mb-4 text-blue-500">Giao tới</h2>
+              <h2 className="mb-4 text-xl font-bold text-blue-500">Giao tới</h2>
               <div className="mb-4">
                 <p className="font-bold">{formData.name}</p>
                 <p>
@@ -456,13 +459,13 @@ export default function Payment() {
                   Thay đổi
                 </a>
               </div>
-              <h2 className="text-xl font-bold mb-4 text-blue-500">Giỏ hàng</h2>
+              <h2 className="mb-4 text-xl font-bold text-blue-500">Giỏ hàng</h2>
               {cartItems.map((item) => (
                 <div key={item.id} className="flex items-center mb-4">
                   <img
                     src={`http://localhost:5000/${item.productId?.image}`}
                     alt={item.productId.name}
-                    className="w-16 h-16 object-cover"
+                    className="object-cover w-16 h-16"
                   />
                   <div className="ml-4">
                     <p className="font-bold">{item.productId.name}</p>
@@ -473,7 +476,7 @@ export default function Payment() {
                   </div>
                 </div>
               ))}
-              <div className="border-t pt-4">
+              <div className="pt-4 border-t">
                 <div className="flex justify-between mb-2">
                   <span>Tổng giá sản phẩm</span>
                   <span>{getTotalPrice().toLocaleString("vi-VN")}đ</span>
@@ -496,7 +499,7 @@ export default function Payment() {
       {currentStep === 2 && (
         <div className="flex flex-col items-center justify-center h-64">
           <CheckCircleOutlined style={{ fontSize: "64px", color: "green" }} />
-          <h2 className="text-2xl font-bold my-4">
+          <h2 className="my-4 text-2xl font-bold">
             Đơn hàng đã được đặt thành công!
           </h2>
           <Button type="primary" onClick={handleBackToHome}>

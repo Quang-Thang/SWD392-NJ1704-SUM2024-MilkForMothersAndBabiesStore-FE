@@ -25,6 +25,19 @@ const OrderList = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [orderDetails, setOrderDetails] = useState([]);
 
+  const statusMapping = {
+    Pending: "Đang chờ xử lý",
+    Processing: "Đang xử lý",
+    Shipped: "Đã gửi",
+    Delivered: "Đã giao",
+    Cancelled: "Hủy bỏ",
+    Deliveried: "Đã giao",
+    "Waiting to be accepted": "Đang chờ được xác nhận",
+    Accepted: "Đã được xác nhận",
+    "On-delivering": "Đang được giao",
+    Canceled: "Bị hủy",
+  };
+
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
@@ -35,6 +48,10 @@ const OrderList = () => {
           createdAt: order.status.orderDate
             ? order.status.orderDate.split("T")[0]
             : order.status.orderDate,
+          total: order.orderDetails.reduce(
+            (acc, detail) => acc + detail.quantity * detail.price,
+            0
+          ),
         }));
         setOrders(formattedOrderData);
       } catch (error) {
@@ -155,7 +172,7 @@ const OrderList = () => {
           default:
             color = "gray";
         }
-        return <Tag color={color}>{status}</Tag>;
+        return <Tag color={color}>{statusMapping[status] || status}</Tag>;
       },
     },
     {

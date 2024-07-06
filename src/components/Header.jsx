@@ -57,7 +57,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-20 bg-white">
-      <div className="flex justify-between mx-20 bg-white-100">
+      <div className="flex justify-between bg-white-100 mx-20">
         <span className="flex justify-between space-x-2">
           <LocationOnIcon />
           Xem tồn kho <strong className="text-blue-600">Miền Nam</strong>
@@ -78,9 +78,9 @@ export default function Header() {
         <div className="flex items-center justify-between mx-20 bg-[#83B4FF] rounded-b-[40px] px-2">
           <Link to="/">
             <img
-              src="https://cdn.discordapp.com/attachments/887282315116568597/1250125417319497788/image.png?ex=667d9405&is=667c4285&hm=34503128b6212c3fb06641f1c0070dd7f67516a77af66e17647105f26415ab47&"
+              src="/assets/images/logo.png"
               alt="Logo"
-              className="h-20 rounded-full w-fit"
+              className="h-20 w-fit"
             />
           </Link>
           <div className="relative w-96">
@@ -92,11 +92,11 @@ export default function Header() {
               className="w-full"
             />
             {searching && (
-              <div className="absolute w-full top-10">Đang tìm kiếm...</div>
+              <div className="absolute top-10 w-full">Đang tìm kiếm...</div>
             )}
             {searchResults.length > 0 && (
               <List
-                className="absolute z-10 w-full bg-white shadow-lg top-10"
+                className="absolute top-10 w-full bg-white shadow-lg z-10"
                 bordered
                 dataSource={searchResults}
                 renderItem={(item) => (
@@ -108,7 +108,7 @@ export default function Header() {
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="object-cover w-10 h-10 mr-2"
+                        className="w-10 h-10 object-cover mr-2"
                       />
                       <Typography.Text>{item.name}</Typography.Text>
                     </Link>
@@ -171,7 +171,7 @@ export default function Header() {
             </Link>
           </div>
         </div>
-        <div className="flex items-center justify-between mx-20">
+        <div className="flex justify-between items-center mx-20">
           <Link to="/list-product">
             <Button type="text">Mẹ bầu và sau sinh</Button>
           </Link>

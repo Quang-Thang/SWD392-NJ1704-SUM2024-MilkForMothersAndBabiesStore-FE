@@ -384,15 +384,3 @@ export const searchProducts = async (keyword) => {
     throw error;
   }
 };
-
-export const getComments = async (productId) => {
-  try {
-    const res = await axios.get(
-      `${BASE_URL}/api/comments/get-comments-by-product-id/${productId}`
-    );
-    console.log(res.data);
-    return res.data;
-  } catch (error) {
-    console.log("Error getting comments: ", error);
-  }
-};

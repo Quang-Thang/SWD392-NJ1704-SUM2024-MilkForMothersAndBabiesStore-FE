@@ -20,10 +20,8 @@ import {
   addToCart,
   getUserCart,
   updateCart,
-  getComments,
 } from "../services/api-service";
 import { toast } from "react-toastify";
-import axios from "axios";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -43,7 +41,6 @@ export default function ProductDetail() {
   const [isInCart, setIsInCart] = useState(false);
   const { id } = useParams();
   const [ratingBreakdown, setRatingBreakdown] = useState([]);
-  const [comments, setComments] = useState();
 
   const toggleReadMore = () => {
     setIsExpanded(!isExpanded);
@@ -113,19 +110,6 @@ export default function ProductDetail() {
     }
   };
 
-  const getProductComments = async () => {
-    try {
-      const res = await axios.get(
-        `https://swdprojectapi.azurewebsites.net/api/comments/get-comments-by-product-id/${id}`
-      );
-      console.log("Response: ", res.data.data);
-      setComments(res.data.data);
-      console.log("Comments: ", comments);
-    } catch (error) {
-      console.log("Error: ", error);
-    }
-  };
-
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -163,7 +147,6 @@ export default function ProductDetail() {
 
     fetchProduct();
     checkProductInCart();
-    getProductComments();
   }, [id]);
 
   if (error) {
@@ -193,32 +176,9 @@ export default function ProductDetail() {
       .replace("₫", " VND");
   };
 
-  const handleCreateReview = async () => {
-    try {
-      const accountId = localStorage.getItem("accountId");
-      const now = new Date();
-
-      // Example usage
-      const res = await axios.post(
-        "https://swdprojectapi.azurewebsites.net/api/comments/create-comment",
-        {
-          userId: accountId,
-          productId: product.id,
-          content: review,
-          commentDate: now,
-          rate: rating,
-          status: true,
-        }
-      );
-      console.log("Rate success: ", res);
-    } catch (error) {
-      console.log("Bug at rating", error);
-    }
-  };
-
   return (
-    <div className="flex flex-col items-center justify-center p-4 space-y-4 bg-gray-100">
-      <div className="w-11/12 p-8 bg-white rounded-lg shadow-lg">
+    <div className="flex flex-col justify-center items-center bg-gray-100 p-4 space-y-4">
+      <div className="bg-white rounded-lg shadow-lg p-8 w-11/12">
         <div className="flex">
           <div className="w-2/3">
             <img
@@ -234,19 +194,19 @@ export default function ProductDetail() {
             <div className="flex items-center">
               <div className="flex-1">
                 <p className="text-gray-500">Giá bán tại: TP. HCM</p>
-                <p className="text-2xl font-bold text-red-500">
+                <p className="text-red-500 text-2xl font-bold">
                   {formatPrice(product?.price)}
                 </p>
               </div>
             </div>
             <Button
               type="primary"
-              className="w-full py-2 mt-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded mt-4"
               size="large"
             >
               FLASH SALE THÁNG 5
             </Button>
-            <div className="flex items-center mt-4">
+            <div className="mt-4 flex items-center">
               <img
                 src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Icon-VNPAY-QR.png"
                 alt="VNPAY"
@@ -278,7 +238,7 @@ export default function ProductDetail() {
               </div>
               <Button
                 type="primary"
-                className="w-full py-2 mt-4 font-bold text-white bg-orange-500 rounded hover:bg-orange-700"
+                className="w-full bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 rounded mt-4"
                 size="large"
                 onClick={handleAddToCart}
                 disabled={isInCart}
@@ -299,7 +259,7 @@ export default function ProductDetail() {
                 <Option value="Hà Nội">Hà Nội</Option>
                 <Option value="Đà Nẵng">Đà Nẵng</Option>
               </Select>
-              <p className="mt-2 text-green-500">Freeship 7km</p>
+              <p className="text-green-500 mt-2">Freeship 7km</p>
             </div>
             <div className="mt-4 text-red-500">
               <p>
@@ -308,11 +268,11 @@ export default function ProductDetail() {
               </p>
             </div>
           </div>
-          <div className="flex flex-col w-1/4 pl-8">
+          <div className="w-1/4 pl-8 flex flex-col">
             <img
               src="https://cdn-v2.kidsplaza.vn/media/wysiwyg/Landing-2024/5/tai-app/186x186-TAI-APP-T5.png"
               alt="Voucher"
-              className="w-full mb-4 rounded-lg"
+              className="w-full rounded-lg mb-4"
             />
             <div className="flex flex-col justify-between">
               <div className="flex items-center mb-2">
@@ -343,7 +303,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-      <div className="w-11/12 p-8 mx-auto bg-white rounded-lg shadow-lg">
+      <div className="bg-white rounded-lg shadow-lg p-8 w-11/12 mx-auto">
         <Tabs defaultActiveKey="1">
           <TabPane tab="Mô tả" key="1">
             <Row gutter={[16, 16]}>
@@ -358,7 +318,7 @@ export default function ProductDetail() {
                 </p>
                 <Button
                   type="primary"
-                  className="mt-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                  className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
                   onClick={toggleReadMore}
                 >
                   {isExpanded ? "Thu gọn" : "Xem thêm"}
@@ -377,7 +337,7 @@ export default function ProductDetail() {
             </Row>
           </TabPane>
           <TabPane tab="Đánh giá" key="2">
-            <div className="flex items-center justify-around my-10 space-y-2">
+            <div className="flex items-center space-y-2 justify-around my-10">
               <div className="text-2xl font-bold">
                 {product.rating} <Rate disabled defaultValue={product.rating} />
               </div>
@@ -398,7 +358,7 @@ export default function ProductDetail() {
                       }
                       showInfo={false}
                     />
-                    <div className="w-full text-sm">
+                    <div className="text-sm w-full">
                       {ratingBreakdown[index]} Đánh giá
                     </div>
                   </div>
@@ -424,9 +384,8 @@ export default function ProductDetail() {
                 />
                 <Button
                   type="primary"
-                  className="py-2 mt-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                  className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded"
                   size="large"
-                  onClick={handleCreateReview}
                 >
                   Gửi đánh giá
                 </Button>
@@ -435,14 +394,13 @@ export default function ProductDetail() {
             <div className="space-y-6">
               <Divider />
               <div className="mb-4">
-                <h2 className="mb-4 text-xl font-semibold">Lọc xem theo</h2>
+                <h2 className="text-xl font-semibold mb-4">Lọc xem theo</h2>
                 <div className="flex space-x-2">
                   {[
                     "Tất cả",
                     "5 sao",
                     "4 sao",
                     "3 sao",
-                    "2 sao",
                     "1 sao",
                     "Có hình ảnh",
                   ].map((item) => (
@@ -458,32 +416,23 @@ export default function ProductDetail() {
                 </div>
               </div>
               <Divider />
-              <h3 className="space-x-4 text-lg font-bold">
+              <h3 className="text-lg font-bold space-x-4">
                 Đánh giá của người dùng
               </h3>
-              {comments != null ? (
-                comments.map((item, index) => (
-                  <div key={item.id} className="mt-2">
-                    <div className="flex items-center">
-                      <span className="font-bold">{item.id}</span>
-                      <Rate
-                        disabled
-                        defaultValue={5}
-                        className="ml-2"
-                        count={item.rate}
-                      />
-                    </div>
-                    <p className="text-gray-500">{item.content}</p>
-                    <p className="text-sm text-gray-400">{item.commentDate}</p>
-                  </div>
-                ))
-              ) : (
-                <div>Chưa có lượt đánh giá</div>
-              )}
+              <div className="mt-2">
+                <div className="flex items-center">
+                  <span className="font-bold">NGUYEN THAO</span>
+                  <Rate disabled defaultValue={5} className="ml-2" />
+                </div>
+                <p className="text-gray-500">
+                  Sữa tốt cho mẹ và bé, rất thơm ngon
+                </p>
+                <p className="text-gray-400 text-sm">0 lượt thích 04-07-2023</p>
+              </div>
             </div>
           </TabPane>
           <TabPane tab="Mẹ hỏi / BeBé trả lời" key="3">
-            <div className="flex flex-col items-center w-1/2 space-y-4">
+            <div className="flex flex-col space-y-4 items-center w-1/2">
               <Input
                 type="text"
                 value={name}
@@ -500,7 +449,7 @@ export default function ProductDetail() {
               />
               <Button
                 type="primary"
-                className="w-full h-12 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded w-full h-12"
                 onClick={handleSubmitComment}
               >
                 Gửi bình luận
@@ -509,16 +458,16 @@ export default function ProductDetail() {
           </TabPane>
         </Tabs>
       </div>
-      <div className="w-11/12 my-10 bg-white-100">
-        <div className="flex items-center justify-between p-4 bg-white border-b rounded-t-lg">
+      <div className="bg-white-100 my-10 w-11/12">
+        <div className="bg-white p-4 rounded-t-lg flex justify-between items-center border-b">
           <h1 className="text-2xl font-bold">SẢN PHẨM CÓ THỂ BẠN QUAN TÂM</h1>
         </div>
-        <div className="p-4 bg-white rounded-b-lg shadow-md">
+        <div className="bg-white p-4 rounded-b-lg shadow-md">
           <div className="flex justify-around mt-6">
             {[1, 2, 3, 4].map((productIndex) => (
               <div
                 key={productIndex}
-                className="w-1/5 p-4 text-center bg-gray-100 rounded-lg shadow-md"
+                className="bg-gray-100 p-4 rounded-lg shadow-md w-1/5 text-center"
               >
                 <img
                   src="https://via.placeholder.com/150"
@@ -528,12 +477,12 @@ export default function ProductDetail() {
                 <p className="mt-2">
                   Sữa Healthy Care số 3 (Úc) Toddler 900g dành cho trẻ 1
                 </p>
-                <div className="mt-2 text-xl font-bold text-red-500">
+                <div className="text-red-500 font-bold text-xl mt-2">
                   {formatPrice(465000 * productIndex)}
                 </div>
-                <div className="flex items-center justify-center mt-2">
+                <div className="flex justify-center items-center mt-2">
                   <span className="text-yellow-500">★★★★★</span>
-                  <span className="ml-2 text-gray-500">(1101)</span>
+                  <span className="text-gray-500 ml-2">(1101)</span>
                 </div>
               </div>
             ))}
