@@ -10,7 +10,9 @@ import {
   Checkbox,
   message,
   Breadcrumb,
+  Upload,
 } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import {
   getAllProducts,
   updateProduct,
@@ -33,6 +35,8 @@ const ManagementProduct = () => {
   const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [editingCategory, setEditingCategory] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [isGiftChecked, setIsGiftChecked] = useState(false);
   const [form] = Form.useForm();
   const [createForm] = Form.useForm();
   const [categoryForm] = Form.useForm();
@@ -62,6 +66,7 @@ const ManagementProduct = () => {
 
   const showEditModal = (record) => {
     setEditingProduct(record);
+    setIsGiftChecked(record.isGift);
     form.setFieldsValue(record);
     setIsEditModalVisible(true);
   };
@@ -82,11 +87,16 @@ const ManagementProduct = () => {
     setIsCategoryModalVisible(false);
     setEditingProduct(null);
     setEditingCategory(null);
+    setImageUrl(null);
+    setIsGiftChecked(false);
   };
 
   const handleUpdate = async () => {
     try {
       const updatedProduct = { ...editingProduct, ...form.getFieldsValue() };
+      if (imageUrl) {
+        updatedProduct.image = imageUrl;
+      }
       await updateProduct(updatedProduct);
       setDataSource((prev) =>
         prev.map((product) =>
@@ -104,6 +114,9 @@ const ManagementProduct = () => {
   const handleCreate = async () => {
     try {
       const newProduct = createForm.getFieldsValue();
+      if (imageUrl) {
+        newProduct.image = imageUrl;
+      }
       await createProduct(newProduct);
       message.success("Sản phẩm đã được tạo thành công");
       handleCancel();
@@ -195,6 +208,19 @@ const ManagementProduct = () => {
         console.log("Đã hủy");
       },
     });
+  };
+
+  const handleImageChange = (info) => {
+    if (info.file.status === "done") {
+      setImageUrl(info.file.response.url); // Assuming the server returns the uploaded file's URL in response
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
+
+  const handleIsGiftChange = (e) => {
+    setIsGiftChecked(e.target.checked);
   };
 
   const columns = [
@@ -312,7 +338,18 @@ const ManagementProduct = () => {
             <InputNumber min={0} style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item name="discount" label="Giảm giá">
-            <InputNumber min={0} max={100} style={{ width: "100%" }} />
+            <Input.Group compact>
+              <InputNumber min={0} max={100} style={{ width: "90%" }} />
+              <Input
+                style={{
+                  width: "10%",
+                  pointerEvents: "none",
+                  backgroundColor: "#f5f5f5",
+                }}
+                placeholder="%"
+                disabled
+              />
+            </Input.Group>
           </Form.Item>
           <Form.Item name="category" label="Danh mục">
             <Select>
@@ -333,7 +370,14 @@ const ManagementProduct = () => {
             <InputNumber min={0} style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item name="image" label="Hình ảnh">
-            <Input />
+            <Upload
+              name="image"
+              action="http://localhost:9999/upload" // Change this to your actual upload URL
+              listType="picture"
+              onChange={handleImageChange}
+            >
+              <Button icon={<UploadOutlined />}>Upload</Button>
+            </Upload>
           </Form.Item>
           <Form.Item
             name="isPreorder"
@@ -343,10 +387,14 @@ const ManagementProduct = () => {
             <Checkbox />
           </Form.Item>
           <Form.Item name="isGift" label="Quà tặng" valuePropName="checked">
-            <Checkbox />
+            <Checkbox onChange={handleIsGiftChange} />
           </Form.Item>
           <Form.Item name="giftPoint" label="Điểm quà tặng">
-            <InputNumber min={0} style={{ width: "100%" }} />
+            <InputNumber
+              min={0}
+              style={{ width: "100%" }}
+              disabled={isGiftChecked}
+            />
           </Form.Item>
           <Form.Item name="capacity" label="Dung tích">
             <InputNumber min={0} style={{ width: "100%" }} />
@@ -382,7 +430,18 @@ const ManagementProduct = () => {
             <InputNumber min={0} style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item name="discount" label="Giảm giá">
-            <InputNumber min={0} max={100} style={{ width: "100%" }} />
+            <Input.Group compact>
+              <InputNumber min={0} max={100} style={{ width: "90%" }} />
+              <Input
+                style={{
+                  width: "10%",
+                  pointerEvents: "none",
+                  backgroundColor: "#f5f5f5",
+                }}
+                placeholder="%"
+                disabled
+              />
+            </Input.Group>
           </Form.Item>
           <Form.Item name="category" label="Danh mục">
             <Select>
@@ -403,7 +462,14 @@ const ManagementProduct = () => {
             <InputNumber min={0} style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item name="image" label="Hình ảnh">
-            <Input />
+            <Upload
+              name="image"
+              action="http://localhost:9999/upload" // Change this to your actual upload URL
+              listType="picture"
+              onChange={handleImageChange}
+            >
+              <Button icon={<UploadOutlined />}>Upload</Button>
+            </Upload>
           </Form.Item>
           <Form.Item
             name="isPreorder"
@@ -413,10 +479,14 @@ const ManagementProduct = () => {
             <Checkbox />
           </Form.Item>
           <Form.Item name="isGift" label="Quà tặng" valuePropName="checked">
-            <Checkbox />
+            <Checkbox onChange={handleIsGiftChange} />
           </Form.Item>
           <Form.Item name="giftPoint" label="Điểm quà tặng">
-            <InputNumber min={0} style={{ width: "100%" }} />
+            <InputNumber
+              min={0}
+              style={{ width: "100%" }}
+              disabled={isGiftChecked}
+            />
           </Form.Item>
           <Form.Item name="capacity" label="Dung tích">
             <InputNumber min={0} style={{ width: "100%" }} />

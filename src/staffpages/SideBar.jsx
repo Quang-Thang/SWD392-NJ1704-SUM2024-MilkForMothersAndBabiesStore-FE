@@ -9,12 +9,12 @@ import { Link } from "react-router-dom";
 const SideBar = () => {
   return (
     <div className="h-screen w-[15%] bg-white shadow-md sticky top-0 left-0">
-      <div className="flex items-center justify-center w-full h-32 py-4 my-4">
+      <div className="flex items-center justify-center py-4 w-full h-32">
         <Link to="/staff/all-products">
           <img
-            src="https://cdn.discordapp.com/attachments/887282315116568597/1250125417319497788/image.png?ex=667d9405&is=667c4285&hm=34503128b6212c3fb06641f1c0070dd7f67516a77af66e17647105f26415ab47&"
+            src="/assets/images/logo.png"
             alt="Logo"
-            className="h-32 rounded-full w-fit"
+            className="h-42 w-fit"
           />
         </Link>
       </div>

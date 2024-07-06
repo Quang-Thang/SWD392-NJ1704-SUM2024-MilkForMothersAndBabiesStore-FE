@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Table, Modal, message, Breadcrumb } from "antd";
-import { getAllOrders, getProductById } from "../services/api-service";
+import {
+  getAllOrders,
+  getProductById,
+  getAccountById,
+} from "../services/api-service";
 
 const { confirm } = Modal;
 
@@ -10,6 +14,7 @@ const ManagementOrder = () => {
     useState(false);
   const [orderDetailProducts, setOrderDetailProducts] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [customerDetails, setCustomerDetails] = useState(null);
 
   const fetchOrders = async () => {
     try {
@@ -38,9 +43,19 @@ const ManagementOrder = () => {
     }
   };
 
+  const fetchCustomerDetails = async (customerId) => {
+    try {
+      const customer = await getAccountById(customerId);
+      setCustomerDetails(customer);
+    } catch (error) {
+      console.error("Lỗi khi lấy chi tiết khách hàng:", error);
+    }
+  };
+
   const showOrderDetailModal = (record) => {
     setSelectedOrder(record);
     fetchOrderDetailProducts(record.orderDetails);
+    fetchCustomerDetails(record.customerId);
     setIsOrderDetailModalVisible(true);
   };
 
@@ -52,6 +67,23 @@ const ManagementOrder = () => {
     return orderDetailProducts.reduce((total, detail) => {
       return total + detail.price * detail.quantity;
     }, 0);
+  };
+
+  const translateStatus = (status) => {
+    switch (status) {
+      case "Pending":
+        return "Đang chờ xử lý";
+      case "Processing":
+        return "Đang xử lý";
+      case "Shipped":
+        return "Đã gửi";
+      case "Delivered":
+        return "Đã giao";
+      case "Cancelled":
+        return "Bị hủy";
+      default:
+        return status;
+    }
   };
 
   const columns = [
@@ -79,6 +111,7 @@ const ManagementOrder = () => {
       title: "Trạng thái",
       dataIndex: ["status", "orderStatus1"],
       key: "status",
+      render: (status) => translateStatus(status),
     },
     {
       title: "Ngày đặt hàng",
@@ -98,11 +131,11 @@ const ManagementOrder = () => {
   ];
 
   return (
-    <div className="p-4 mx-6 my-4">
-      <div className="flex items-center justify-between mb-4">
+    <div className="mx-6 p-4 my-4">
+      <div className="flex justify-between items-center mb-4">
         <div>
-          <h1 className="ml-4 text-2xl font-bold">Tất cả đơn hàng</h1>
-          <Breadcrumb className="ml-4 text-gray-600">
+          <h1 className="text-2xl font-bold ml-4">Tất cả đơn hàng</h1>
+          <Breadcrumb className="text-gray-600 ml-4">
             <Breadcrumb.Item>Trang chủ</Breadcrumb.Item>
             <Breadcrumb.Item>Tất cả đơn hàng</Breadcrumb.Item>
           </Breadcrumb>
@@ -116,7 +149,7 @@ const ManagementOrder = () => {
         footer={null}
         width={800}
       >
-        {selectedOrder && (
+        {selectedOrder && customerDetails && (
           <div>
             <div className="flex justify-between mb-4">
               <div>
@@ -134,16 +167,19 @@ const ManagementOrder = () => {
                 <p>
                   <strong>Khách hàng:</strong>
                 </p>
-                <p>Tên: {selectedOrder.customerName}</p>
-                <p>Email: {selectedOrder.customerEmail}</p>
-                <p>Số điện thoại: {selectedOrder.customerPhone}</p>
+                <p>Tên: {customerDetails.name}</p>
+                <p>Email: {customerDetails.email}</p>
+                <p>Số điện thoại: {customerDetails.phone}</p>
               </div>
               <div>
                 <p>
                   <strong>Thông tin đơn hàng:</strong>
                 </p>
                 <p>Phương thức thanh toán: {selectedOrder.payment}</p>
-                <p>Trạng thái: {selectedOrder.status.orderStatus1}</p>
+                <p>
+                  Trạng thái:{" "}
+                  {translateStatus(selectedOrder.status.orderStatus1)}
+                </p>
                 <p>Địa chỉ: {selectedOrder.address}</p>
               </div>
             </div>
