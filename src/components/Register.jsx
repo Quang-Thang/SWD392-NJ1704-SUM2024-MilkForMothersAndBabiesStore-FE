@@ -3,6 +3,9 @@ import { Input, Button, DatePicker, Radio } from "antd";
 import { useNavigate } from "react-router-dom";
 import { register } from "../services/api-service";
 import { toast } from "react-toastify";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../utils/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -25,6 +28,14 @@ const Register = () => {
         gender,
         phone,
       });
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, "users", res.user.uid), {
+        fullname,
+        email,
+        id: res.user.uid,
+        blocked: [],
+      });
+
       toast.success("Đăng ký thành công");
       navigate("/login");
     } catch (error) {
@@ -34,9 +45,9 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-1/3">
-        <h2 className="text-2xl font-bold text-center mb-4">Đăng Ký</h2>
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="w-1/3 p-8 bg-white rounded-lg shadow-lg">
+        <h2 className="mb-4 text-2xl font-bold text-center">Đăng Ký</h2>
         <Input
           className="mb-4"
           placeholder="Email"
@@ -60,7 +71,7 @@ const Register = () => {
           onChange={(e) => setFullname(e.target.value)}
         />
         <DatePicker
-          className="mb-4 w-full"
+          className="w-full mb-4"
           placeholder="Ngày sinh"
           size="large"
           value={birthday}
@@ -90,7 +101,7 @@ const Register = () => {
         />
         <Button
           type="primary"
-          className="w-full bg-blue-500 text-white font-bold py-2 rounded"
+          className="w-full py-2 font-bold text-white bg-blue-500 rounded"
           size="large"
           onClick={handleRegister}
         >
