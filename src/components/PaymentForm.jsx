@@ -1,6 +1,5 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useState } from "react";
-import { processPayment } from "../services/api-service";
 import axios from "axios";
 import { toast } from "react-toastify";
 

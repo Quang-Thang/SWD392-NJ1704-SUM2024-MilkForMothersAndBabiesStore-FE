@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import Information from "./Information";
 import { renderProducts } from "../utils/Utils";
 import { getAllProducts, getTopSellingProducts } from "../services/api-service";
-import PaymentForm from "./PaymentForm";
-import { Elements } from "@stripe/react-stripe-js";
-import StripeContainer from "./StripeContainer";
+import axios from "axios";
 
 export default function Home() {
   const [productsSale, setProductsSale] = useState([]);
@@ -16,8 +14,14 @@ export default function Home() {
       try {
         const data = await getAllProducts();
         const shuffled = data.sort(() => 0.5 - Math.random());
-        setProductsSale(shuffled.slice(0, 4));
-        setProductsTrend(shuffled.slice(8, 12));
+
+        const discountedItems = data.filter((item) => item.discount > 0);
+
+        console.log(discountedItems);
+
+        setProductsSale(discountedItems.slice(0, 4));
+
+        setProductsTrend(shuffled.slice(0, 4));
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -59,7 +63,7 @@ export default function Home() {
         </div>
         <div className="w-11/12 bg-white-500">
           <div className="flex items-center justify-between p-4 text-white bg-blue-700 rounded-t-lg">
-            <h1 className="text-2xl font-bold">FLASH SALE THÁNG 5:</h1>
+            <h1 className="text-2xl font-bold">FLASH SALE THÁNG 7:</h1>
             <a href="/list-product" className="text-white underline">
               Xem tất cả &gt;&gt;
             </a>
@@ -91,8 +95,6 @@ export default function Home() {
         />
         <Information />
       </div>
-
-      <StripeContainer></StripeContainer>
     </>
   );
 }

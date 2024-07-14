@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/api-service";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../utils/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -26,7 +29,7 @@ export default function Login() {
             break;
           case "staff":
             message.success("Login successful");
-            navigate("/staff/dashboard");
+            navigate("/staff/order-list");
             break;
           case "admin":
             message.success("Login successful");
@@ -36,6 +39,7 @@ export default function Login() {
             message.error("Unknown role");
             break;
         }
+        await signInWithEmailAndPassword(auth, email, password);
       } else {
         message.error("Login failed: No access token received");
       }
@@ -47,27 +51,27 @@ export default function Login() {
 
   return (
     <div className="px-20 my-10 bg-white">
-      <div className="flex justify-center items-center">
+      <div className="flex items-center justify-center">
         <img
           className="absolute z-0 top-[180px]"
           src="./public/assets/images/image 83.png"
           alt="login"
         />
       </div>
-      <div className="flex justify-center items-center h-screen bg-gray-100 ">
-        <div className="bg-white rounded-lg shadow-lg w-1/3 z-10">
+      <div className="flex items-center justify-center h-screen bg-gray-100 ">
+        <div className="z-10 w-1/3 bg-white rounded-lg shadow-lg">
           <div className="flex">
-            <div className="w-1/2 text-center py-6 bg-yellow-400 rounded-s-md">
+            <div className="w-1/2 py-6 text-center bg-yellow-400 rounded-s-md">
               <h2 className="text-2xl font-bold text-blue-900">ĐĂNG NHẬP</h2>
             </div>
             <Link
               to="/register"
-              className="w-1/2 text-center py-6 bg-gray-200 rounded-e-md"
+              className="w-1/2 py-6 text-center bg-gray-200 rounded-e-md"
             >
               <h2 className="text-2xl font-bold text-blue-900">ĐĂNG KÝ</h2>
             </Link>
           </div>
-          <div className="mx-12 my-8 w-5/6">
+          <div className="w-5/6 mx-12 my-8">
             <Input
               className="mb-4"
               placeholder="Email"
@@ -83,17 +87,17 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <div className="flex justify-between items-center mb-4">
-              <Button type="link" className="p-0 text-black font-bold">
+            <div className="flex items-center justify-between mb-4">
+              <Button type="link" className="p-0 font-bold text-black">
                 Lưu thông tin đăng nhập
               </Button>
-              <Button type="link" className="p-0 text-black font-bold">
+              <Button type="link" className="p-0 font-bold text-black">
                 Quên mật khẩu?
               </Button>
             </div>
             <Button
               type="primary"
-              className="w-full bg-blue-500 text-white font-bold py-2 rounded"
+              className="w-full py-2 font-bold text-white bg-blue-500 rounded"
               size="large"
               onClick={handleLogin}
             >

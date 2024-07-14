@@ -7,9 +7,16 @@ export const renderProducts = (products) => (
       <Link
         to={`/product-detail/${product.id}`}
         key={product.id}
-        className="rounded-lg shadow-md w-1/5 text-center m-4"
+        className="relative w-1/5 m-4 text-center rounded-lg shadow-md"
         // onClick={() => onClick(product.id)}
       >
+        {product.discount > 0 ? (
+          <div className="absolute px-4 py-5 font-bold text-yellow-300 bg-red-500 rounded-full right-5">
+            -<span>{product.discount}</span>%
+          </div>
+        ) : (
+          ""
+        )}
         <img
           src={
             product.image === null || product.image === ""
@@ -19,14 +26,22 @@ export const renderProducts = (products) => (
           alt={product.name}
           className="mx-auto"
         />
-        <p className="mt-2 mx-10">{product.name}</p>
-        <div className="flex justify-center items-center space-x-2 mt-2">
+        <p className="mx-10 mt-2">{product.name}</p>
+        <div className="flex items-center justify-center mt-2 space-x-2">
           <Rate disabled defaultValue={product.rating || 5} />
           <span>({product.reviews || 0})</span>
         </div>
-        <div className="text-red-500 font-bold text-xl mt-2">
-          {product.price}VND
-        </div>
+        {product.discount > 0 ? (
+          <div className="gap-4 mt-2 text-xl font-bold text-red-500">
+            <s>{product.price} VND</s> <span>{product.onDiscountPrice}</span>{" "}
+            VND
+          </div>
+        ) : (
+          <div className="mt-2 text-xl font-bold text-red-500">
+            {product.price} VND
+          </div>
+        )}
+
         {/* <div className="text-gray-500 line-through">{product.price} VND</div> */}
       </Link>
     ))}

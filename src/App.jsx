@@ -29,6 +29,8 @@ import OrderHistory from "./components/OrderHistory";
 import Headerv3 from "./adminpages/Headerv3";
 import ManagementProduct from "./staffpages/ManagementProduct";
 import ManagementOrder from "./staffpages/ManagementOrder";
+import StaffChat from "./staffpages/StaffChat";
+import CustChat from "./components/CustChat";
 
 function App() {
   return (
@@ -127,6 +129,17 @@ function App() {
             }
           />
           <Route path="/payment" element={<Payment />} />
+
+          <Route
+            path="/cust-chat"
+            element={
+              <>
+                <Header />
+                <CustChat />
+                <Footer />
+              </>
+            }
+          />
         </Routes>
 
         {/* Routes for staff */}
@@ -304,6 +317,21 @@ function App() {
                   <div className="flex-1">
                     <Headerv2 />
                     <ManagementOrder />
+                  </div>
+                </div>
+              </>
+            }
+          />
+
+          <Route
+            path="/staff/staff-chat"
+            element={
+              <>
+                <div className="flex">
+                  <SideBar />
+                  <div className="flex-1">
+                    <Headerv2 />
+                    <StaffChat />
                   </div>
                 </div>
               </>
